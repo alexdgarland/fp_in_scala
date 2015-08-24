@@ -132,6 +132,43 @@ class Chapter2Tests extends Specification {
       }
 
     }
+
   }
+
+
+  "Curry function" should {
+
+    "convert function to allow partial application" in {
+      def nonCurriedFunction (a : String, b : String) = a + ", " + b
+      val curriedFunction = curry(nonCurriedFunction)
+      val partiallyAppliedFunction = curriedFunction("Hello")
+      partiallyAppliedFunction("world!") must beEqualTo("Hello, world!")
+    }
+
+  }
+
+
+  "Uncurry function" should {
+
+    "convert function to require non-partial application" in {
+      def curriedFunction (a : String) = (b : String) => (a + ", " + b)
+      val uncurriedFunction = uncurry(curriedFunction)
+      uncurriedFunction("Hello", "world!") must beEqualTo("Hello, world!")
+    }
+
+  }
+
+
+  "Compose function" should {
+
+    "combine passed functions so can be applied in one call" in {
+      def getStringLength = (s : String) => s.length()
+      def floatSquare = (i : Int) => (i * i).toFloat
+      val composedFunction : (String => Float) = compose(floatSquare, getStringLength)
+      composedFunction("Hello, world") must beEqualTo(144.0)
+    }
+
+  }
+
 
 }
