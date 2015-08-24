@@ -45,7 +45,7 @@ package object fp_in_scala {
 
   /*
 
-  Fibonacci functions
+  2.1 - Fibonacci functions
 
   Note that these follow the given definition of a Fibonacci sequence as starting (0, 1, ...).
 
@@ -73,6 +73,20 @@ package object fp_in_scala {
 
   // Impression so far is that although tail-call elimination is a useful optimisation,
   // using it can lose some of the clarity of the simplest recursive solutions.
+
+
+  /*
+
+  2.2 - isSorted
+
+  */
+
+  @annotation.tailrec
+  def isSorted[A](as: Array[A], ordered: (A,A) => Boolean) : Boolean = {
+    if (as.length <= 1) true
+    else if (!ordered(as(0), as(1))) false
+    else isSorted(as.tail, ordered)
+  }
 
 
 }
