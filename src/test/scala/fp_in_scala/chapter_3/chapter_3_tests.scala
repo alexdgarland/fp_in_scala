@@ -107,4 +107,21 @@ class Chapter3Tests extends Specification {
   }
 
 
+  "Init function" should {
+
+    "return empty list as init of empty list " in {
+      init(Nil) must beEqualTo(Nil)
+    }
+
+    "return empty list as init of list with single element" in {
+      init(List(1)) must beEqualTo(Nil)
+    }
+
+    "return all but last element as init of list with multiple elements" in {
+      init(List(1, 2, 3, 4)) must beEqualTo(List(1, 2, 3))
+    }
+
+  }
+
+
 }

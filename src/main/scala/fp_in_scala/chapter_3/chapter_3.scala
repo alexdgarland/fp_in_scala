@@ -61,4 +61,25 @@ object functions {
       case x::xs => x::xs
   }
 
+
+  /*
+
+  3.6 Init function
+
+  Because we're working with an immutable, singly-linked list, we have to:
+
+  a) loop through fully
+    (as there is no direct pointer to the last element)
+
+  b) construct each time without simply data-sharing
+    (as the link from penultimate to last element cannot be simply removed/ updated)
+
+  */
+
+  def init[A](list : List[A]) : List[A] = list match {
+    case Nil => Nil
+    case x::Nil => Nil
+    case x::xs => x::init(xs)
+  }
+
 }
