@@ -56,9 +56,8 @@ object functions {
 
   @annotation.tailrec
   def dropwhile[A](list : List[A], p : (A) => Boolean) : List[A] = list match {
-      case Nil => Nil
       case x::xs if(p(x)) => dropwhile(xs, p)
-      case x::xs => x::xs
+      case _ => list
   }
 
 
