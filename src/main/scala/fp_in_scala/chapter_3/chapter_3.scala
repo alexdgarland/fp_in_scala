@@ -32,4 +32,18 @@ object functions {
     case x :: xs => newHead :: xs
   }
 
+
+  /*
+
+  3.4 - Drop function
+
+  */
+
+  @annotation.tailrec
+  def drop[A](list : List[A], n : Int) : List[A] = {
+    if (list == Nil) Nil
+    else if (n <= 0) list
+    else drop(tail(list), n-1)
+  }
+
 }

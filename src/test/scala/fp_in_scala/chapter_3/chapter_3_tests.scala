@@ -56,4 +56,30 @@ class Chapter3Tests extends Specification {
 
   }
 
+
+  "Drop function" should {
+
+    "return empty list when asked to drop from empty list" in {
+      drop(List.empty[Int], 1) must beEqualTo(Nil)
+    }
+
+    "return empty list when asked to drop more elements than present in list" in {
+      drop(List(1, 2), 3) must beEqualTo(Nil)
+    }
+
+    "return empty list when asked to drop all elements present in list" in {
+      drop(List(1, 2), 2) must beEqualTo(Nil)
+    }
+
+    "return correct elements when asked to drop less than the full list" in {
+      drop(List(1, 2, 3, 4, 5, 6), 3) must beEqualTo(List(4, 5, 6))
+    }
+
+    "return original list when asked to drop zero elements" in {
+      val originalList = List(1, 2, 3, 4, 5, 6)
+      drop(originalList, 0) must beEqualTo(originalList)
+    }
+
+  }
+
 }
