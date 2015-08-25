@@ -82,4 +82,29 @@ class Chapter3Tests extends Specification {
 
   }
 
+
+  "Drop While function" should {
+
+    def greaterThan10 = (i : Int) => i > 10
+
+    "return empty list when given empty list (regardless of predicate)" in {
+      dropwhile(List.empty[Int], greaterThan10) must beEqualTo(Nil)
+    }
+
+    "return empty list when all elements match predicate" in {
+      dropwhile(List(11, 12), greaterThan10) must beEqualTo(Nil)
+    }
+
+    "return original list when no elements match predicate" in {
+      val originalList = List(1, 2, 3)
+      dropwhile(originalList, greaterThan10) must beEqualTo(originalList)
+    }
+
+    "return correct elements when some match predicate" in {
+      dropwhile(List(1, 11, 2, 22, 3, 33), greaterThan10) must beEqualTo(List(1, 2, 3))
+    }
+
+  }
+
+
 }

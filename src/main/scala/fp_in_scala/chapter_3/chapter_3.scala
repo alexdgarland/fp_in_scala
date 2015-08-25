@@ -46,4 +46,18 @@ object functions {
     else drop(tail(list), n-1)
   }
 
+
+  /*
+
+  3.5 Drop While function
+
+  */
+
+  // Need to see if I can make this tail-recursive (probably by using an inner function)
+  def dropwhile[A](list : List[A], p : (A) => Boolean) : List[A] = list match {
+      case Nil => Nil
+      case ((x:A) :: (xs:List[A])) => if(p(x)) dropwhile(xs, p) else x::dropwhile(xs, p)
+  }
+
+
 }
