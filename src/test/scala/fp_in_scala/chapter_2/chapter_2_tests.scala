@@ -1,5 +1,6 @@
-package fp_in_scala
+package fp_in_scala.chapter_2
 
+import fp_in_scala.chapter_2.functions._
 import org.junit.runner.RunWith
 import org.specs2.mutable._
 import org.specs2.runner._

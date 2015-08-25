@@ -1,3 +1,5 @@
+package fp_in_scala.chapter_2
+
 /**
  *
  * Functions implemented to complete exercises and generally explore concepts from
@@ -5,7 +7,7 @@
  *
  */
 
-package object fp_in_scala {
+object functions {
 
   /*
 
