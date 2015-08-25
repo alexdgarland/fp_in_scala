@@ -124,4 +124,20 @@ class Chapter3Tests extends Specification {
   }
 
 
+  "Length function implemented with foldRight" should {
+
+    "return zero for empty list" in {
+      lengthWithFoldRight(List.empty[Int]) must beEqualTo(0)
+    }
+
+    "return two when list size is two" in {
+      lengthWithFoldRight(List(1, 2)) must beEqualTo(2)
+    }
+
+    "return five when list size is five" in {
+      lengthWithFoldRight(List(1, 2, 1, 2, 1)) must beEqualTo(5)
+    }
+
+  }
+
 }

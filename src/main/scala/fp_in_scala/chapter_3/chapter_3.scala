@@ -56,7 +56,7 @@ object functions {
 
   @annotation.tailrec
   def dropwhile[A](list : List[A], p : (A) => Boolean) : List[A] = list match {
-      case x::xs if(p(x)) => dropwhile(xs, p)
+      case x::xs if p(x) => dropwhile(xs, p)
       case _ => list
   }
 
@@ -80,5 +80,17 @@ object functions {
     case x::Nil => Nil
     case x::xs => x::init(xs)
   }
+
+
+  /*
+
+  3.9 Length using foldRight
+
+  */
+
+  def lengthWithFoldRight[A](list : List[A]) : Int = {
+    list.foldRight(0)((_,acc)=>acc+1)
+  }
+
 
 }
