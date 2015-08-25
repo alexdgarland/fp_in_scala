@@ -17,7 +17,8 @@ object functions {
 
   def tail[A](list : List[A]) : List[A] = list match {
     case Nil => Nil
-    case x :: xs => xs  // This also covers x :: Nil, returning Nil (empty list if passed a list of only one element)
+    case x :: xs => xs
+    // This also covers x :: Nil (returning empty list if passed list of one element)
   }
 
 
@@ -53,11 +54,11 @@ object functions {
 
   */
 
-  // Need to see if I can make this tail-recursive (probably by using an inner function)
+  @annotation.tailrec
   def dropwhile[A](list : List[A], p : (A) => Boolean) : List[A] = list match {
       case Nil => Nil
-      case ((x:A) :: (xs:List[A])) => if(p(x)) dropwhile(xs, p) else x::dropwhile(xs, p)
+      case x::xs if(p(x)) => dropwhile(xs, p)
+      case x::xs => x::xs
   }
-
 
 }

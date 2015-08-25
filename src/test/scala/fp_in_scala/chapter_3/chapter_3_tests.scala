@@ -100,8 +100,8 @@ class Chapter3Tests extends Specification {
       dropwhile(originalList, greaterThan10) must beEqualTo(originalList)
     }
 
-    "return correct elements when some match predicate" in {
-      dropwhile(List(1, 11, 2, 22, 3, 33), greaterThan10) must beEqualTo(List(1, 2, 3))
+    "return list starting from first non-matchig element when some match predicate" in {
+      dropwhile(List(11, 22, 2, 3, 33), greaterThan10) must beEqualTo(List(2, 3, 33))
     }
 
   }
