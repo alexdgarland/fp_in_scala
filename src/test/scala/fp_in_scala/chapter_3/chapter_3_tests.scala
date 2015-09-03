@@ -140,4 +140,34 @@ class Chapter3Tests extends Specification {
 
   }
 
+  "foldLeft" should {
+
+    val testList = List(2, 4, 5)
+
+    "perform left-associative division over a list when implemented iteratively" in {
+      iterFoldLeft(testList,1000)((acc,next)=>acc/next) must beEqualTo(25)
+    }
+
+    "perform left-associative division over a list when implemented tail-recursively" in {
+      recFoldLeft(testList,1000)((acc,next)=>acc/next) must beEqualTo(25)
+    }
+
+    "allow us to sum a list" in {
+      sumWithFoldLeft(List(1,2,3,4,5)) must beEqualTo(15)
+    }
+
+    "allow us to find the product of a list" in {
+      productWithFoldLeft(List(1,2,3,4,5)) must beEqualTo(120)
+    }
+
+    "allow us to find the length of a list" in {
+      lengthWithFoldLeft(List(1,2,3,4,5)) must beEqualTo(5)
+    }
+
+    "allow us to reverse a list" in {
+      reverseWithFoldLeft(List(1,2,3,4,5)) must beEqualTo(List(5,4,3,2,1))
+    }
+
+  }
+
 }

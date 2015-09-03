@@ -93,4 +93,58 @@ object functions {
   }
 
 
+  /*
+
+  3.10 foldLeft implementations
+
+  */
+
+  // Iterative version roughly in line with Odersky implementation for core Scala
+  def iterFoldLeft[A,B](list : List[A], startVal : B)(f: (B,A) => B) : B = {
+    var acc : B = startVal
+    var remainingList : List[A] = list
+    while(!(remainingList.isEmpty)) {
+      acc = f(acc, remainingList.head)
+      remainingList = remainingList.tail
+    }
+    acc
+  }
+
+  // Tail-recursive equivalent
+  @annotation.tailrec
+  def recFoldLeft[A,B](list : List[A], startVal : B)(f: (B,A) => B) : B = list match {
+    case Nil => startVal
+    case x::xs => recFoldLeft(xs, f(startVal,x))(f)
+  }
+
+
+  /*
+
+  3.11 Functions implemented with (built-in) foldLeft
+
+  */
+
+  def sumWithFoldLeft(list : List[Int]) = {
+    list.foldLeft(0)(_+_)
+  }
+
+  def productWithFoldLeft(list : List[Int]) = {
+    list.foldLeft(1)(_*_)
+  }
+
+  def lengthWithFoldLeft[A](list : List[A]) = {
+    list.foldLeft(0)((acc,_)=>acc+1)
+  }
+
+
+  /*
+
+  3.12 Reverse list - implemented with foldLeft
+
+  */
+
+  def reverseWithFoldLeft[A](list : List[A]) : List[A] = {
+    list.foldLeft(List.empty[A])((acc,next)=>next::acc)
+  }
+
 }
