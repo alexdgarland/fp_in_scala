@@ -147,4 +147,30 @@ object functions {
     list.foldLeft(List.empty[A])((acc,next)=>next::acc)
   }
 
+
+  /*
+
+  3.13 Implementing foldLeft and foldRight in terms of each other.
+
+  This is a "hard" problem so not solving for now.
+
+  For reference, there looks to be a good explanation of the answer on Stack Overflow here:
+
+  http://stackoverflow.com/questions/17136794/foldleft-using-foldright-in-scala
+
+  */
+
+
+  /*
+
+  3.14 Implement append using foldLeft &/or foldRight
+
+  In this case, foldRight seems the obvious way to do it.
+
+  */
+
+  def appendWithFoldRight[A](list : List[A], newElement : A) : List[A] = {
+    list.foldRight(List(newElement))((elem, accList) => elem :: accList)
+  }
+
 }

@@ -140,6 +140,7 @@ class Chapter3Tests extends Specification {
 
   }
 
+
   "foldLeft" should {
 
     val testList = List(2, 4, 5)
@@ -166,6 +167,15 @@ class Chapter3Tests extends Specification {
 
     "allow us to reverse a list" in {
       reverseWithFoldLeft(List(1,2,3,4,5)) must beEqualTo(List(5,4,3,2,1))
+    }
+
+  }
+
+
+  "append" should {
+
+    "be implementable with foldRight" in {
+      appendWithFoldRight(List(1,2,3), 4) must beEqualTo(List(1,2,3,4))
     }
 
   }
