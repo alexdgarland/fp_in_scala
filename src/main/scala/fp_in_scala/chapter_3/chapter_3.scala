@@ -196,4 +196,22 @@ object functions {
   }
 
 
+  /*
+
+  3.16 Transform a list of integers by adding 1 to each (pure - returning new list).
+
+  This is obviously aiming at "map" so will do our own quick implementation of that first.
+
+  */
+
+  // Note: had to write this curried to allow proper type inference when used.
+  def mapWithFoldRight[A,B](inList : List[A])(f : (A) => (B)) : List[B] = {
+    inList.foldRight(List.empty[B])((nextElem, list) => f(nextElem) :: list)
+  }
+
+  def incrementList(list : List[Int]) = {
+    mapWithFoldRight(list)((element)=>(element + 1))
+  }
+
+
 }

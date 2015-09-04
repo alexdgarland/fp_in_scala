@@ -180,11 +180,19 @@ class Chapter3Tests extends Specification {
 
   }
 
-  "flattenWithFoldRight" should {
+  "flattenWithFoldRight function" should {
 
     "return the correct flat list from a nested list" in {
       val inputList = List(List(1,2,3), List(4,5,6), List(7,8,9))
       flattenWithFoldRight(inputList) must beEqualTo(List(1,2,3,4,5,6,7,8,9))
+    }
+
+  }
+
+  "incrementList function" should {
+
+    "return a new List[Int] with each element increased by one" in {
+      incrementList(List(1,2,3,4,5)) must beEqualTo(List(2,3,4,5,6))
     }
 
   }
