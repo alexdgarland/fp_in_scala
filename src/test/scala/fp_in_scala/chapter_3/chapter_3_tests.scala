@@ -197,5 +197,33 @@ class Chapter3Tests extends Specification {
 
   }
 
+  "stringifyDoubleList function" should {
+
+    "return expected list of strings when give list of doubles" in {
+      val inputList : List[Double] = List(1.0,2.0,3.0,4.0,5.0)
+      val expectedList : List[String] = List("1.0","2.0","3.0","4.0","5.0")
+      stringifyDoubleList(inputList) must beEqualTo(expectedList)
+    }
+
+  }
+
+
+  "removeOddNumbers function" should {
+
+    "not remove any numbers from even-only list" in {
+      val originalList = List(2,4,6,8,10)
+      removeOddNumbers(originalList) must beEqualTo(originalList)
+    }
+
+    "return empty list for odd-only list" in {
+      removeOddNumbers(List(1,3,5,7,9)).length must beEqualTo(0)
+    }
+
+    "remove correct elements from mixed list" in {
+      removeOddNumbers(List(1,2,3,4,5,6)) must beEqualTo(List(2,4,6))
+    }
+
+  }
+
 
 }

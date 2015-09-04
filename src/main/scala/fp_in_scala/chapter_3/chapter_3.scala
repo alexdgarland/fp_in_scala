@@ -214,4 +214,41 @@ object functions {
   }
 
 
+  /*
+
+  3.17 Turn each value in a List[Double] into a string.
+
+  This is another use for map.
+
+  */
+
+  def stringifyDoubleList(list : List[Double]) : List[String] = {
+    mapWithFoldRight(list)(d=>d.toString)
+  }
+
+
+  /*
+
+  3.18 Function "map" that generalises modifying each list element while maintaining structure.
+
+  This is already implemented as part of 3.16!
+
+  */
+
+
+  /*
+
+  3.19 Implement filter and use it to remove odd numbers from a list.
+
+  */
+
+  def filterWithFoldRight[A] (list : List[A]) (predicate : (A)=>Boolean) : List[A] = {
+    list.foldRight(List.empty[A])((elem, list) => if (predicate(elem)) elem::list else list)
+  }
+
+  def removeOddNumbers(list : List[Int]) : List[Int] = {
+    filterWithFoldRight(list)(i=>(i%2==0))
+  }
+
+
 }
