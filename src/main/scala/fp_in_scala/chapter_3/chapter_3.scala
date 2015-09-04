@@ -298,15 +298,16 @@ object functions {
 
   def myZipWith[A,B,C](list1 : List[A], list2 : List[B])(f : (A,B)=>C) : List[C] = {
 
-    val sharedLength = scala.math.min(list1.length, list2.length)
-
-    var outList = List.empty[C]
-
-    for (i <- ((sharedLength-1) to 0 by -1)) {
-      outList = f(list1(i), list2(i)) :: outList
+    @annotation.tailrec
+    def go(i : Int, currentList : List[C]) : List[C] = {
+      if (i<0) currentList
+      else go(i-1, f(list1(i), list2(i)) :: currentList)
     }
 
-    outList
+    val sharedLength = scala.math.min(list1.length, list2.length)
+
+    go(sharedLength-1, List.empty[C])
+
   }
 
   def zipWithAddition(list1 : List[Int], list2 : List[Int]) = myZipWith(list1, list2)(_+_)
