@@ -284,4 +284,31 @@ object functions {
   }
 
 
+  /*
+
+  3.22 Construct a list from two lists of ints by adding corresponding elements
+
+  and
+
+  3.23 Generalise the function (implement zipWith)
+
+  I'm approaching this by simply implementing zipWith and then using it to handle the more specific version.
+
+  */
+
+  def myZipWith[A,B,C](list1 : List[A], list2 : List[B])(f : (A,B)=>C) : List[C] = {
+
+    val sharedLength = scala.math.min(list1.length, list2.length)
+
+    var outList = List.empty[C]
+
+    for (i <- ((sharedLength-1) to 0 by -1)) {
+      outList = f(list1(i), list2(i)) :: outList
+    }
+
+    outList
+  }
+
+  def zipWithAddition(list1 : List[Int], list2 : List[Int]) = myZipWith(list1, list2)(_+_)
+
 }

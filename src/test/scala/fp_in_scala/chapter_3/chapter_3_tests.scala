@@ -261,4 +261,22 @@ class Chapter3Tests extends Specification {
   }
 
 
+  "zipWithAddition function" should {
+    // This acts as a testable instance of the more general myZipWith function
+
+    "zip two equal length lists correctly" in {
+      zipWithAddition(List(1,2,3), List(4,5,6)) must beEqualTo(List(5,7,9))
+    }
+
+    "zip items up to maximum shared length where first list is longer" in {
+      zipWithAddition(List(7,8,9,10), List(11,12,13)) must beEqualTo(List(18,20,22))
+    }
+
+    "zip items up to maximum shared length where second list is longer" in {
+      zipWithAddition(List(14,15,16), List(17,18,19,20)) must beEqualTo(List(31,33,35))
+    }
+
+  }
+
+
 }
