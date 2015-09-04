@@ -251,4 +251,26 @@ object functions {
   }
 
 
+  /*
+
+  3.20 Implement flatMap
+
+  */
+
+  def myFlatMap[A,B](list : List[A])(f : A => List[B]) = {
+
+    // This is probably best (cerainly most simply) implemented by composing or chaining other functions,
+    // for example "list.map(f).flatten" (this passes unit test).
+
+    // However, just to explore what's going on (based on my implementation of flatten):
+
+    def merge(outList : List[B], nextList : List[B]) = {
+      nextList.foldRight(outList)((nextElem, list) => nextElem :: list)
+    }
+
+    list.foldRight(List.empty[B])((elem, outList) => merge(outList, f(elem)))
+
+  }
+
+
 }

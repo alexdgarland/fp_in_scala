@@ -226,4 +226,19 @@ class Chapter3Tests extends Specification {
   }
 
 
+  "myFlatMap" should {
+
+    "return correct list when given list plus transformation" in {
+      // Arrange
+      val inputList = List(1,2,3,4)
+      def transformFunc(i : Int) = (1 to 3).toList.map(el => el * i)
+      val expectedList = List(1, 2, 3, 2, 4, 6, 3, 6, 9, 4, 8, 12)
+      // Act
+      val actualList = myFlatMap(inputList)(transformFunc)
+      // Assert
+      actualList must beEqualTo(expectedList)
+    }
+
+  }
+
 }
