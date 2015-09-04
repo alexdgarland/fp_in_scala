@@ -241,4 +241,24 @@ class Chapter3Tests extends Specification {
 
   }
 
+
+  "filterWithFlatMap function" should {
+
+    val isEven = (i : Int) => (i % 2 == 0)
+
+    "not remove any numbers from even-only list filtered for evens" in {
+      val originalList = List(2,4,6,8,10)
+      filterWithFlatMap(originalList)(isEven) must beEqualTo(originalList)
+    }
+
+    "return empty list for odd-only list filtered for evens" in {
+      filterWithFlatMap(List(1,3,5,7,9))(isEven).length must beEqualTo(0)
+    }
+
+    "remove correct elements from mixed list filtered for evens" in {
+      filterWithFlatMap(List(1,2,3,4,5,6))(isEven) must beEqualTo(List(2,4,6))
+    }
+  }
+
+
 }

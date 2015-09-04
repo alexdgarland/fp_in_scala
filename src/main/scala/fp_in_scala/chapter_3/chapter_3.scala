@@ -273,4 +273,15 @@ object functions {
   }
 
 
+  /*
+
+  3.21 Use flatMap to implement filter
+
+  */
+
+  def filterWithFlatMap[A](list : List[A])(predicate : A=>Boolean) = {
+    list.flatMap(elem=> if (predicate(elem)) List(elem) else List.empty[A])
+  }
+
+
 }
