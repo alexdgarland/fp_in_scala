@@ -173,4 +173,27 @@ object functions {
     list.foldRight(List(newElement))((elem, accList) => elem :: accList)
   }
 
+
+  /*
+
+  3.15 Concatenate a list-of-lists into a single list in linear time (AKA flatten).
+
+  */
+
+  def flattenWithFoldRight[A](nestedList : List[List[A]]) : List[A] = {
+
+    // This is effectively an inner loop running once for each element of the individual list passed.
+    def merge(outList : List[A], nextList : List[A]) = {
+      nextList.foldRight(outList)((nextElem, list) => nextElem :: list)
+    }
+
+    // This is effectively an outer loop, running the merge function (inner loop) once for each list in the input.
+    nestedList.foldRight(List.empty[A])((nextList, outList) => merge(outList, nextList))
+
+    // So, each element of each list is run over once, giving us the required linear (O(n)) time
+    // (relative to the total length of the output list).
+
+  }
+
+
 }
