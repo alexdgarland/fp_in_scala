@@ -79,4 +79,28 @@ object tree_functions {
     case Branch(left,right) => Branch(treeMap(left)(f), treeMap(right)(f))
   }
 
+
+  /*
+
+  3.29 Generalise tree functions by implementing "fold".
+
+  */
+
+  def treeFold[A,B](tree : Tree[A])(fLeaf : A=>B)(fBranch : (B,B) => B) : B = tree match {
+    case Leaf(value) => fLeaf(value)
+    case Branch(left,right) => fBranch(treeFold(left)(fLeaf)(fBranch),treeFold(right)(fLeaf)(fBranch))
+  }
+
+  def treeSizeWithFold[A](tree : Tree[A]) =
+    treeFold(tree)(leaf=>1)((lSize,rSize)=> 1 + lSize + rSize)
+
+  def treeMaxValueWithFold(tree : Tree[Int]) =
+    treeFold(tree)(v=>v)((lMax,rMax)=>max(lMax,rMax))
+
+  def treeDepthWithFold[A](tree : Tree[A]) =
+    treeFold(tree)(_=>0)((lDepth,rDepth)=> 1 + max(lDepth,rDepth))
+
+  def treeMapWithFold[A,B](tree : Tree[A])(f : A=>B) =
+    treeFold(tree)(v=>Leaf(f(v)):Tree[B])((lTree, rTree)=>Branch(lTree,rTree))
+
 }

@@ -37,12 +37,20 @@ class Chapter3TreeTests extends Specification {
       treeSize(testTree) must beEqualTo(9)
     }
 
+    "with fold - return 9 for standard test tree" in {
+      treeSizeWithFold(testTree) must beEqualTo(9)
+    }
+
   }
 
   "function for maximum leaf value in tree" should {
 
     "return 5 for standard test tree" in {
       treeMaxValue(testTree) must beEqualTo(5)
+    }
+
+    "with fold - return 5 for standard test tree" in {
+      treeMaxValueWithFold(testTree) must beEqualTo(5)
     }
 
   }
@@ -53,22 +61,35 @@ class Chapter3TreeTests extends Specification {
       treeDepth(testTree) must beEqualTo(3)
     }
 
+    "with fold - return 3 for standard test tree" in {
+      treeDepthWithFold(testTree) must beEqualTo(3)
+    }
+
   }
 
   "function for mapping over tree" should {
 
+    val expectedIntTree = Branch(Branch(Leaf(2), Leaf(6)), Branch(Leaf(4), Branch(Leaf(10), Leaf(8))))
+    val expectedStringTree = Branch(Branch(Leaf("A2"), Leaf("A6")), Branch(Leaf("A4"), Branch(Leaf("A10"), Leaf("A8"))))
+
     "return expected tree for standard test tree with doubling function mapped" in {
-      val expectedTree = Branch(Branch(Leaf(2), Leaf(6)), Branch(Leaf(4), Branch(Leaf(10), Leaf(8))))
-      treeMap(testTree)(i=>i*2) must beEqualTo(expectedTree)
+      treeMap(testTree)(i=>i*2) must beEqualTo(expectedIntTree)
     }
 
     "return expected tree for standard test tree with function which changes value type mapped" in {
-      val expectedTree = Branch(Branch(Leaf("A2"), Leaf("A6")), Branch(Leaf("A4"), Branch(Leaf("A10"), Leaf("A8"))))
-      treeMap(testTree)(i=>"A"+(i*2).toString) must beEqualTo(expectedTree)
+      treeMap(testTree)(i=>"A"+(i*2).toString) must beEqualTo(expectedStringTree)
     }
 
-  }
+    "with fold - return expected tree for standard test tree with doubling function mapped" in {
+      treeMapWithFold(testTree)(i=>i*2) must beEqualTo(expectedIntTree)
+    }
 
+    "with fold - return expected tree for standard test tree with function which changes value type mapped" in {
+      treeMapWithFold(testTree)(i=>"A"+(i*2).toString) must beEqualTo(expectedStringTree)
+    }
+
+
+  }
 
 
 }
