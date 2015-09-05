@@ -312,4 +312,19 @@ object functions {
 
   def zipWithAddition(list1 : List[Int], list2 : List[Int]) = myZipWith(list1, list2)(_+_)
 
+
+  /*
+
+  3.24 Check whether a list contains another list as a subsequence.
+
+  */
+
+  @annotation.tailrec
+  def hasSubsequence[A](sup : List[A], sub : List[A]) : Boolean = {
+    if (sub.isEmpty) return true
+    if (sup.isEmpty) return false
+    hasSubsequence(sup.tail, if (sub.head==sup.head) sub.tail else sub)
+  }
+
+
 }

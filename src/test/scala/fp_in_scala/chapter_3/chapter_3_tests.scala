@@ -279,4 +279,23 @@ class Chapter3Tests extends Specification {
   }
 
 
+  "hasSubsequence function" should {
+
+    val superSequence = List(1,2,3,4,5,6,7,8,9,10)
+
+    "recognise continuous subsequence" in {
+      hasSubsequence(superSequence, List(3,4,5)) must beTrue
+    }
+
+    "recognise non-continuous subsequence" in {
+      hasSubsequence(superSequence, List(3,6,8)) must beTrue
+    }
+
+    "recognise when subsequence is not present" in {
+      hasSubsequence(superSequence, List(3,6,3)) must beFalse
+    }
+
+  }
+
+
 }
