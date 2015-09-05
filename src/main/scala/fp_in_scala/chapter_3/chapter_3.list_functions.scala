@@ -7,7 +7,7 @@ package fp_in_scala.chapter_3
  *
  */
 
-object functions {
+object list_functions {
 
   /*
 

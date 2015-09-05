@@ -1,12 +1,12 @@
 package fp_in_scala.chapter_3
 
-import fp_in_scala.chapter_3.functions._
+import fp_in_scala.chapter_3.list_functions._
 import org.junit.runner.RunWith
 import org.specs2.mutable._
 import org.specs2.runner._
 
 @RunWith(classOf[JUnitRunner])
-class Chapter3Tests extends Specification {
+class Chapter3ListTests extends Specification {
 
   "Tail function" should {
 
