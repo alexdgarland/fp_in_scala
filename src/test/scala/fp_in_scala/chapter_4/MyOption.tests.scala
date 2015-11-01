@@ -1,8 +1,5 @@
 package fp_in_scala.chapter_4
 
-// import fp_in_scala.chapter_4.{MySome, MyNone}
-
-
 import org.junit.runner.RunWith
 import org.specs2.mutable._
 import org.specs2.runner._
