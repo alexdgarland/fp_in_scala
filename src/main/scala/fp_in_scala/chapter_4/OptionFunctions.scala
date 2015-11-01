@@ -25,13 +25,16 @@ object OptionFunctions {
     An implementation using foldRight and map2, again essentially cribbed from:
     https://github.com/astorije/fpinscala-exercises/blob/master/src/main/scala/ch4errorhandling/Option.scala#L84
      */
-    a.foldRight[Option[List[A]]](Some(List()))((oElem,oList)=>map2(oElem,oList)(_::_))
+    // a.foldRight[Option[List[A]]](Some(List()))((oElem,oList)=>map2(oElem,oList)(_::_))
     /*
     map2 allows None values to be propagated through foldRight,
     allowing screening for None and getting values to be done in a single pass
     while also blocking further applications of the mapped function as soon as any None is found.
      */
 
+    // Following Ex. 4.5 - Rewrite in terms of traverse
+    // Effectively just pass the identity function - traverse is a generalisation of sequence
+    traverse(a)(elem=>elem)
   }
 
   // Exercise 4.5 - implement "traverse"
