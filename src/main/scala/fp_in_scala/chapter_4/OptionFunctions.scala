@@ -34,4 +34,9 @@ object OptionFunctions {
 
   }
 
+  // Exercise 4.5 - implement "traverse"
+  def traverse[A, B](a : List[A])(f : A => Option[B]) : Option[List[B]] = {
+    a.foldRight[Option[List[B]]](Some(List[B]()))((oElem,oList)=>map2(f(oElem),oList)(_::_))
+  }
+
 }
