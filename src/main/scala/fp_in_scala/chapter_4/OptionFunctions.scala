@@ -5,10 +5,14 @@ object OptionFunctions {
   // Exercise 4.3 - implement "map2",
   // applying a binary function if both Options given are Some
   def map2[A,B,C](a: Option[A], b: Option[B])(f: (A,B)=>C) : Option[C] =
-    (a,b) match {
-      case (Some(val_a), Some(val_b)) => Some(f(val_a, val_b))
-      case  _ => None
-    }
+  // We can do this using pattern matching ...
+//    (a,b) match {
+//      case (Some(val_a), Some(val_b)) => Some(f(val_a, val_b))
+//      case  _ => None
+//    }
+    // ... but this is a more idiomatic version as provided later in the chapter:
+    a.flatMap(a_value => b.map(b_value => f(a_value, b_value)))
+
 
   // Exercise 4.4 - implement "sequence",
   // turning a List[Option] into an Option[List]
@@ -36,6 +40,7 @@ object OptionFunctions {
     // Effectively just pass the identity function - traverse is a generalisation of sequence
     traverse(a)(elem=>elem)
   }
+
 
   // Exercise 4.5 - implement "traverse"
   def traverse[A, B](a : List[A])(f : A => Option[B]) : Option[List[B]] = {
