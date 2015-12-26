@@ -3,15 +3,18 @@ package fp_in_scala.chapter_4
 import org.junit.runner.RunWith
 import org.specs2.mutable._
 import org.specs2.runner._
+import MyEither._
 
 
 @RunWith(classOf[JUnitRunner])
 class MyEitherTests extends Specification {
 
+
   val receiverRightVal = MyRight(2)
   val receiverLeftVal = MyLeft("Receiver was MyLeft")
   val tripleFunc = (i : Int) => i * 3
   val functionRightResult = MyRight(6)
+
 
   "map on MyEither" should {
 
@@ -92,6 +95,34 @@ class MyEitherTests extends Specification {
 
     "return MyLeft of receiver when receiver and argument are both MyLeft" in {
       receiverLeftVal.map2(argumentLeftVal)(multiplyIntAndFloatToString) must beEqualTo(receiverLeftVal)
+    }
+
+  }
+
+
+  "sequence over list of MyEither" should {
+
+    "return MyRight[List] where all list elements are MyRight" in {
+      sequence(List(MyRight(1), MyRight(2), MyRight(3))) must beEqualTo(MyRight(List(1,2,3)))
+    }
+
+    "return first MyLeft from list where not all list elements are MyRight" in {
+      sequence(List(MyRight(1), MyLeft("Error 1"), MyRight("Error 2"), MyRight(2))) must beEqualTo(MyLeft("Error 1"))
+    }
+
+  }
+
+
+  "traverse over list of MyEither" should {
+
+    val doubleToRightIfEven = (i : Int) => if (i % 2 == 0) MyRight(i*2) else MyLeft(s"Fail at value : $i")
+
+    "return MyRight[List[B]] where all list elements can be converted to MyRight[B] by given function" in {
+      traverse(List(2, 4, 6))(doubleToRightIfEven) must beEqualTo(MyRight(List(4, 8, 12)))
+    }
+
+    "return first MyLeft result where not all list elements can be converted to MyRight[B] by given function" in {
+      traverse(List(2, 5, 6))(doubleToRightIfEven) must beEqualTo(MyLeft("Fail at value : 5"))
     }
 
   }
