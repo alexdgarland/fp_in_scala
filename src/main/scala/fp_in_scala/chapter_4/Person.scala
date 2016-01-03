@@ -20,7 +20,7 @@ object Person {
     else MyRight(Age(age))
   }
 
-  def mkPerson(name : String, age : Int) : MyEither[String, Person] = {
+  def mkPerson(name : String, age : Int) : MyEither[List[String], Person] = {
     mkName(name).map2(mkAge(age))(Person(_,_))
   }
 

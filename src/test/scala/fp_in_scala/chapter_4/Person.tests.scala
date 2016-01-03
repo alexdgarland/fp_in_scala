@@ -11,8 +11,10 @@ import fp_in_scala.chapter_4.Person._
 class PersonTests extends Specification {
 
 
-  val nameErrorResult = MyLeft("Name is empty.")
-  val ageErrorResult = MyLeft("Age is out of range.")
+  val nameErrorMsg = "Name is empty."
+  val nameErrorResult = MyLeft(nameErrorMsg)
+  val ageErrorMsg = "Age is out of range."
+  val ageErrorResult = MyLeft(ageErrorMsg)
 
 
   "mkName" should {
@@ -55,16 +57,16 @@ class PersonTests extends Specification {
       mkPerson("Bob", 22) must beEqualTo(MyRight(Person(Name("Bob"), Age(22))))
     }
 
-    "return Left of name error string when only name is invalid" in {
-      mkPerson("", 22) must beEqualTo(nameErrorResult)
+    "return Left of list containing name error string when only name is invalid" in {
+      mkPerson("", 22) must beEqualTo(MyLeft(List(nameErrorMsg)))
     }
 
-    "return Left of age error string when only age is invalid" in {
-      mkPerson("Bob", -1) must beEqualTo(ageErrorResult)
+    "return Left of list containing age error string when only age is invalid" in {
+      mkPerson("Bob", -1) must beEqualTo(MyLeft(List(ageErrorMsg)))
     }
 
-    "return Left of name error string when both arguments are invalid" in {
-      mkPerson("", -1) must beEqualTo(nameErrorResult)
+    "return Left of list containing both error strings when both arguments are invalid" in {
+      mkPerson("", -1) must beEqualTo(MyLeft(List(nameErrorMsg, ageErrorMsg)))
     }
 
   }

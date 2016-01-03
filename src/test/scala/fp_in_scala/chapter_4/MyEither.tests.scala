@@ -11,7 +11,8 @@ class MyEitherTests extends Specification {
 
 
   val receiverRightVal = MyRight(2)
-  val receiverLeftVal = MyLeft("Receiver was MyLeft")
+  val receiverLeftMsg = "Receiver was MyLeft"
+  val receiverLeftVal = MyLeft(receiverLeftMsg)
   val tripleFunc = (i : Int) => i * 3
   val functionRightResult = MyRight(6)
 
@@ -79,22 +80,25 @@ class MyEitherTests extends Specification {
     val multiplyIntAndFloatToString = (a : Int, b : Double) => s"Result is : ${a * b}"
     val argumentRightVal = MyRight(3.0)
     val map2FunctionResult = MyRight("Result is : 6.0")
-    val argumentLeftVal = MyLeft("Argument was MyLeft")
+    val argumentLeftMsg = "Argument was MyLeft"
+    val argumentLeftVal = MyLeft(argumentLeftMsg)
 
     "return result of function when receiver and argument are both MyRight" in {
       receiverRightVal.map2(argumentRightVal)(multiplyIntAndFloatToString) must beEqualTo(map2FunctionResult)
     }
 
-    "return MyLeft of receiver when receiver is MyLeft and argument is MyRight" in {
-      receiverLeftVal.map2(argumentRightVal)(multiplyIntAndFloatToString) must beEqualTo(receiverLeftVal)
+    "return MyLeft of list containing MyLeft of receiver when receiver is MyLeft and argument is MyRight" in {
+      receiverLeftVal.map2(argumentRightVal)(multiplyIntAndFloatToString) must beEqualTo(MyLeft(List(receiverLeftMsg)))
     }
 
-    "return MyLeft of argument when receiver is MyRight and argument is MyLeft" in {
-      receiverRightVal.map2(argumentLeftVal)(multiplyIntAndFloatToString) must beEqualTo(argumentLeftVal)
+    "return MyLeft of list containing MyLeft of argument when receiver is MyRight and argument is MyLeft" in {
+      receiverRightVal.map2(argumentLeftVal)(multiplyIntAndFloatToString) must beEqualTo(MyLeft(List(argumentLeftMsg)))
     }
 
-    "return MyLeft of receiver when receiver and argument are both MyLeft" in {
-      receiverLeftVal.map2(argumentLeftVal)(multiplyIntAndFloatToString) must beEqualTo(receiverLeftVal)
+    "return MyLeft of list containing both MyLeft values when receiver and argument are both MyLeft" in {
+      receiverLeftVal.map2(argumentLeftVal)(multiplyIntAndFloatToString) must beEqualTo(
+        MyLeft(List(receiverLeftMsg, argumentLeftMsg))
+      )
     }
 
   }
@@ -106,8 +110,9 @@ class MyEitherTests extends Specification {
       sequence(List(MyRight(1), MyRight(2), MyRight(3))) must beEqualTo(MyRight(List(1,2,3)))
     }
 
-    "return first MyLeft from list where not all list elements are MyRight" in {
-      sequence(List(MyRight(1), MyLeft("Error 1"), MyRight("Error 2"), MyRight(2))) must beEqualTo(MyLeft("Error 1"))
+    "return list of all MyLeft results where not all list elements are MyRight" in {
+      val inputList = List(MyRight(1), MyLeft("Error 1"), MyLeft("Error 2"), MyRight(2))
+      sequence(inputList) must beEqualTo(MyLeft(List("Error 1", "Error 2")))
     }
 
   }
@@ -121,8 +126,9 @@ class MyEitherTests extends Specification {
       traverse(List(2, 4, 6))(doubleToRightIfEven) must beEqualTo(MyRight(List(4, 8, 12)))
     }
 
-    "return first MyLeft result where not all list elements can be converted to MyRight[B] by given function" in {
-      traverse(List(2, 5, 6))(doubleToRightIfEven) must beEqualTo(MyLeft("Fail at value : 5"))
+    "return list of all MyLeft results where not all list elements can be converted to MyRight[B] by given function" in {
+      val expectedLeft = MyLeft(List("Fail at value : 5", "Fail at value : 7"))
+      traverse(List(2, 5, 6, 7))(doubleToRightIfEven) must beEqualTo(expectedLeft)
     }
 
   }
