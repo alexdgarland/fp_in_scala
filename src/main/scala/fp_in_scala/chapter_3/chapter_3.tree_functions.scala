@@ -1,13 +1,14 @@
 package fp_in_scala.chapter_3
 
 /**
- *
- * Functions implemented to complete exercises and generally explore concepts from
- * Chiusano, Bjarnason - "Functional Programming in Scala"
- *
- */
+  *
+  * Functions implemented to complete exercises and generally explore concepts from
+  * Chiusano, Bjarnason - "Functional Programming in Scala"
+  *
+  */
 
 object tree_functions {
+
 
   /*
 
@@ -16,9 +17,11 @@ object tree_functions {
   */
   sealed trait Tree[+A]
 
-  case class Leaf[A](value : A) extends Tree[A]
 
-  case class Branch[A](left : Tree[A], right : Tree[A]) extends Tree[A]
+  case class Leaf[A](value: A) extends Tree[A]
+
+
+  case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
 
 
   /*
@@ -27,7 +30,9 @@ object tree_functions {
 
   */
 
+
   import scala.math.max
+
 
   /*
 
@@ -35,9 +40,9 @@ object tree_functions {
 
   */
 
-  def treeSize[A](tree : Tree[A]) : Int = tree match {
+  def treeSize[A](tree: Tree[A]): Int = tree match {
     case Leaf(_) => 1
-    case Branch(left,right) => 1 + treeSize(left) + treeSize(right)
+    case Branch(left, right) => 1 + treeSize(left) + treeSize(right)
   }
 
 
@@ -47,9 +52,9 @@ object tree_functions {
 
   */
 
-  def treeMaxValue(tree : Tree[Int]) : Int = tree match {
+  def treeMaxValue(tree: Tree[Int]): Int = tree match {
     case Leaf(value) => value
-    case Branch(left,right) => max(treeMaxValue(left), treeMaxValue(right))
+    case Branch(left, right) => max(treeMaxValue(left), treeMaxValue(right))
   }
 
 
@@ -59,10 +64,11 @@ object tree_functions {
 
   */
 
-  def treeDepth[A](tree : Tree[A]) : Int = tree match {
+  def treeDepth[A](tree: Tree[A]): Int = tree match {
     case Leaf(_) => 0
-    case Branch(left,right) => 1 + max(treeDepth(left), treeDepth(right))
+    case Branch(left, right) => 1 + max(treeDepth(left), treeDepth(right))
   }
+
 
   /*
 
@@ -74,9 +80,9 @@ object tree_functions {
 
   */
 
-  def treeMap[A,B](tree : Tree[A])(f : A=>B) : Tree[B] = tree match {
+  def treeMap[A, B](tree: Tree[A])(f: A => B): Tree[B] = tree match {
     case Leaf(value) => Leaf(f(value))
-    case Branch(left,right) => Branch(treeMap(left)(f), treeMap(right)(f))
+    case Branch(left, right) => Branch(treeMap(left)(f), treeMap(right)(f))
   }
 
 
@@ -86,21 +92,25 @@ object tree_functions {
 
   */
 
-  def treeFold[A,B](tree : Tree[A])(fLeaf : A=>B)(fBranch : (B,B) => B) : B = tree match {
+  def treeFold[A, B](tree: Tree[A])(fLeaf: A => B)(fBranch: (B, B) => B): B = tree match {
     case Leaf(value) => fLeaf(value)
-    case Branch(left,right) => fBranch(treeFold(left)(fLeaf)(fBranch),treeFold(right)(fLeaf)(fBranch))
+    case Branch(left, right) => fBranch(treeFold(left)(fLeaf)(fBranch), treeFold(right)(fLeaf)(fBranch))
   }
 
-  def treeSizeWithFold[A](tree : Tree[A]) =
-    treeFold(tree)(leaf=>1)((lSize,rSize)=> 1 + lSize + rSize)
 
-  def treeMaxValueWithFold(tree : Tree[Int]) =
-    treeFold(tree)(v=>v)((lMax,rMax)=>max(lMax,rMax))
+  def treeSizeWithFold[A](tree: Tree[A]) =
+    treeFold(tree)(leaf => 1)((lSize, rSize) => 1 + lSize + rSize)
 
-  def treeDepthWithFold[A](tree : Tree[A]) =
-    treeFold(tree)(_=>0)((lDepth,rDepth)=> 1 + max(lDepth,rDepth))
 
-  def treeMapWithFold[A,B](tree : Tree[A])(f : A=>B) =
-    treeFold(tree)(v=>Leaf(f(v)):Tree[B])((lTree, rTree)=>Branch(lTree,rTree))
+  def treeMaxValueWithFold(tree: Tree[Int]) =
+    treeFold(tree)(v => v)((lMax, rMax) => max(lMax, rMax))
+
+
+  def treeDepthWithFold[A](tree: Tree[A]) =
+    treeFold(tree)(_ => 0)((lDepth, rDepth) => 1 + max(lDepth, rDepth))
+
+
+  def treeMapWithFold[A, B](tree: Tree[A])(f: A => B) =
+    treeFold(tree)(v => Leaf(f(v)): Tree[B])((lTree, rTree) => Branch(lTree, rTree))
 
 }

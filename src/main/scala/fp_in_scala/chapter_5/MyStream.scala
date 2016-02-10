@@ -9,6 +9,7 @@ sealed trait MyStream[+A] {
     case MyCons(h, t) => Some(h())
   }
 
+
   def toList: List[A] = this match {
     case MyEmpty => List.empty
     case MyCons(h, t) => h() :: t().toList

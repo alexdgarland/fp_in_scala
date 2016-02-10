@@ -13,7 +13,7 @@ class MyEitherTests extends Specification {
   val receiverRightVal = MyRight(2)
   val receiverLeftMsg = "Receiver was MyLeft"
   val receiverLeftVal = MyLeft(receiverLeftMsg)
-  val tripleFunc = (i : Int) => i * 3
+  val tripleFunc = (i: Int) => i * 3
   val functionRightResult = MyRight(6)
 
 
@@ -32,9 +32,9 @@ class MyEitherTests extends Specification {
 
   "flatMap on MyEither" should {
 
-    val tripleFuncAsMyRight = (i : Int) => MyRight(i * 3)
+    val tripleFuncAsMyRight = (i: Int) => MyRight(i * 3)
     val functionLeftVal = MyLeft("Function gives MyLeft value")
-    val funcGivingMyLeft = (i : Int) => functionLeftVal
+    val funcGivingMyLeft = (i: Int) => functionLeftVal
 
     "return result of function when receiver and output of function are both MyRight" in {
       receiverRightVal.flatMap(tripleFuncAsMyRight) must beEqualTo(MyRight(6))
@@ -77,7 +77,7 @@ class MyEitherTests extends Specification {
 
   "map2 on MyEither" should {
 
-    val multiplyIntAndFloatToString = (a : Int, b : Double) => s"Result is : ${a * b}"
+    val multiplyIntAndFloatToString = (a: Int, b: Double) => s"Result is : ${a * b}"
     val argumentRightVal = MyRight(3.0)
     val map2FunctionResult = MyRight("Result is : 6.0")
     val argumentLeftMsg = "Argument was MyLeft"
@@ -107,7 +107,7 @@ class MyEitherTests extends Specification {
   "sequence over list of MyEither" should {
 
     "return MyRight[List] where all list elements are MyRight" in {
-      sequence(List(MyRight(1), MyRight(2), MyRight(3))) must beEqualTo(MyRight(List(1,2,3)))
+      sequence(List(MyRight(1), MyRight(2), MyRight(3))) must beEqualTo(MyRight(List(1, 2, 3)))
     }
 
     "return list of all MyLeft results where not all list elements are MyRight" in {
@@ -120,7 +120,7 @@ class MyEitherTests extends Specification {
 
   "traverse over list of MyEither" should {
 
-    val doubleToRightIfEven = (i : Int) => if (i % 2 == 0) MyRight(i*2) else MyLeft(s"Fail at value : $i")
+    val doubleToRightIfEven = (i: Int) => if (i % 2 == 0) MyRight(i * 2) else MyLeft(s"Fail at value : $i")
 
     "return MyRight[List[B]] where all list elements can be converted to MyRight[B] by given function" in {
       traverse(List(2, 4, 6))(doubleToRightIfEven) must beEqualTo(MyRight(List(4, 8, 12)))

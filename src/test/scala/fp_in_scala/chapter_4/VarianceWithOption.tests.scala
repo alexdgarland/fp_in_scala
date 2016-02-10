@@ -5,8 +5,10 @@ import org.specs2.mutable._
 import org.specs2.runner._
 import VarianceWithOption._
 
+
 @RunWith(classOf[JUnitRunner])
 class VarianceWithOptionTests extends Specification {
+
 
   "meanOfSeq function" should {
 
@@ -34,7 +36,6 @@ class VarianceWithOptionTests extends Specification {
   }
 
 }
-
 
 
 // sum = 129

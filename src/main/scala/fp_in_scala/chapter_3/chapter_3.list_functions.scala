@@ -1,13 +1,14 @@
 package fp_in_scala.chapter_3
 
 /**
- *
- * Functions implemented to complete exercises and generally explore concepts from
- * Chiusano, Bjarnason - "Functional Programming in Scala"
- *
- */
+  *
+  * Functions implemented to complete exercises and generally explore concepts from
+  * Chiusano, Bjarnason - "Functional Programming in Scala"
+  *
+  */
 
 object list_functions {
+
 
   /*
 
@@ -15,7 +16,7 @@ object list_functions {
 
   */
 
-  def tail[A](list : List[A]) : List[A] = list match {
+  def tail[A](list: List[A]): List[A] = list match {
     case Nil => Nil
     case x :: xs => xs
     // This also covers x :: Nil (returning empty list if passed list of one element)
@@ -28,7 +29,7 @@ object list_functions {
 
   */
 
-  def sethead[A](list : List[A], newHead : A) : List[A] = list match {
+  def sethead[A](list: List[A], newHead: A): List[A] = list match {
     case Nil => Nil
     case x :: xs => newHead :: xs
   }
@@ -41,10 +42,10 @@ object list_functions {
   */
 
   @annotation.tailrec
-  def drop[A](list : List[A], n : Int) : List[A] = {
+  def drop[A](list: List[A], n: Int): List[A] = {
     if (list == Nil) Nil
     else if (n <= 0) list
-    else drop(tail(list), n-1)
+    else drop(tail(list), n - 1)
   }
 
 
@@ -55,9 +56,9 @@ object list_functions {
   */
 
   @annotation.tailrec
-  def dropwhile[A](list : List[A], p : (A) => Boolean) : List[A] = list match {
-      case x::xs if p(x) => dropwhile(xs, p)
-      case _ => list
+  def dropwhile[A](list: List[A], p: (A) => Boolean): List[A] = list match {
+    case x :: xs if p(x) => dropwhile(xs, p)
+    case _ => list
   }
 
 
@@ -75,10 +76,10 @@ object list_functions {
 
   */
 
-  def init[A](list : List[A]) : List[A] = list match {
+  def init[A](list: List[A]): List[A] = list match {
     case Nil => Nil
-    case x::Nil => Nil
-    case x::xs => x::init(xs)
+    case x :: Nil => Nil
+    case x :: xs => x :: init(xs)
   }
 
 
@@ -88,8 +89,8 @@ object list_functions {
 
   */
 
-  def lengthWithFoldRight[A](list : List[A]) : Int = {
-    list.foldRight(0)((_,acc)=>acc+1)
+  def lengthWithFoldRight[A](list: List[A]): Int = {
+    list.foldRight(0)((_, acc) => acc + 1)
   }
 
 
@@ -100,21 +101,22 @@ object list_functions {
   */
 
   // Iterative version roughly in line with Odersky implementation for core Scala
-  def iterFoldLeft[A,B](list : List[A], startVal : B)(f: (B,A) => B) : B = {
-    var acc : B = startVal
-    var remainingList : List[A] = list
-    while(!(remainingList.isEmpty)) {
+  def iterFoldLeft[A, B](list: List[A], startVal: B)(f: (B, A) => B): B = {
+    var acc: B = startVal
+    var remainingList: List[A] = list
+    while (!(remainingList.isEmpty)) {
       acc = f(acc, remainingList.head)
       remainingList = remainingList.tail
     }
     acc
   }
 
+
   // Tail-recursive equivalent
   @annotation.tailrec
-  def recFoldLeft[A,B](list : List[A], startVal : B)(f: (B,A) => B) : B = list match {
+  def recFoldLeft[A, B](list: List[A], startVal: B)(f: (B, A) => B): B = list match {
     case Nil => startVal
-    case x::xs => recFoldLeft(xs, f(startVal,x))(f)
+    case x :: xs => recFoldLeft(xs, f(startVal, x))(f)
   }
 
 
@@ -124,16 +126,18 @@ object list_functions {
 
   */
 
-  def sumWithFoldLeft(list : List[Int]) = {
-    list.foldLeft(0)(_+_)
+  def sumWithFoldLeft(list: List[Int]) = {
+    list.foldLeft(0)(_ + _)
   }
 
-  def productWithFoldLeft(list : List[Int]) = {
-    list.foldLeft(1)(_*_)
+
+  def productWithFoldLeft(list: List[Int]) = {
+    list.foldLeft(1)(_ * _)
   }
 
-  def lengthWithFoldLeft[A](list : List[A]) = {
-    list.foldLeft(0)((acc,_)=>acc+1)
+
+  def lengthWithFoldLeft[A](list: List[A]) = {
+    list.foldLeft(0)((acc, _) => acc + 1)
   }
 
 
@@ -143,8 +147,8 @@ object list_functions {
 
   */
 
-  def reverseWithFoldLeft[A](list : List[A]) : List[A] = {
-    list.foldLeft(List.empty[A])((acc,next)=>next::acc)
+  def reverseWithFoldLeft[A](list: List[A]): List[A] = {
+    list.foldLeft(List.empty[A])((acc, next) => next :: acc)
   }
 
 
@@ -169,7 +173,7 @@ object list_functions {
 
   */
 
-  def appendWithFoldRight[A](list : List[A], newElement : A) : List[A] = {
+  def appendWithFoldRight[A](list: List[A], newElement: A): List[A] = {
     list.foldRight(List(newElement))((elem, accList) => elem :: accList)
   }
 
@@ -180,10 +184,10 @@ object list_functions {
 
   */
 
-  def flattenWithFoldRight[A](nestedList : List[List[A]]) : List[A] = {
+  def flattenWithFoldRight[A](nestedList: List[List[A]]): List[A] = {
 
     // This is effectively an inner loop running once for each element of the individual list passed.
-    def merge(outList : List[A], nextList : List[A]) = {
+    def merge(outList: List[A], nextList: List[A]) = {
       nextList.foldRight(outList)((nextElem, list) => nextElem :: list)
     }
 
@@ -205,12 +209,13 @@ object list_functions {
   */
 
   // Note: had to write this curried to allow proper type inference when used.
-  def mapWithFoldRight[A,B](inList : List[A])(f : (A) => (B)) : List[B] = {
+  def mapWithFoldRight[A, B](inList: List[A])(f: (A) => (B)): List[B] = {
     inList.foldRight(List.empty[B])((nextElem, list) => f(nextElem) :: list)
   }
 
-  def incrementList(list : List[Int]) = {
-    mapWithFoldRight(list)((element)=>(element + 1))
+
+  def incrementList(list: List[Int]) = {
+    mapWithFoldRight(list)((element) => (element + 1))
   }
 
 
@@ -222,8 +227,8 @@ object list_functions {
 
   */
 
-  def stringifyDoubleList(list : List[Double]) : List[String] = {
-    mapWithFoldRight(list)(d=>d.toString)
+  def stringifyDoubleList(list: List[Double]): List[String] = {
+    mapWithFoldRight(list)(d => d.toString)
   }
 
 
@@ -242,12 +247,13 @@ object list_functions {
 
   */
 
-  def filterWithFoldRight[A] (list : List[A]) (predicate : (A)=>Boolean) : List[A] = {
-    list.foldRight(List.empty[A])((elem, list) => if (predicate(elem)) elem::list else list)
+  def filterWithFoldRight[A](list: List[A])(predicate: (A) => Boolean): List[A] = {
+    list.foldRight(List.empty[A])((elem, list) => if (predicate(elem)) elem :: list else list)
   }
 
-  def removeOddNumbers(list : List[Int]) : List[Int] = {
-    filterWithFoldRight(list)(i=>(i%2==0))
+
+  def removeOddNumbers(list: List[Int]): List[Int] = {
+    filterWithFoldRight(list)(i => (i % 2 == 0))
   }
 
 
@@ -257,14 +263,14 @@ object list_functions {
 
   */
 
-  def myFlatMap[A,B](list : List[A])(f : A => List[B]) = {
+  def myFlatMap[A, B](list: List[A])(f: A => List[B]) = {
 
     // This is probably best (cerainly most simply) implemented by composing or chaining other functions,
     // for example "list.map(f).flatten" (this passes unit test).
 
     // However, just to explore what's going on (based on my implementation of flatten):
 
-    def merge(outList : List[B], nextList : List[B]) = {
+    def merge(outList: List[B], nextList: List[B]) = {
       nextList.foldRight(outList)((nextElem, list) => nextElem :: list)
     }
 
@@ -279,8 +285,8 @@ object list_functions {
 
   */
 
-  def filterWithFlatMap[A](list : List[A])(predicate : A=>Boolean) = {
-    list.flatMap(elem=> if (predicate(elem)) List(elem) else List.empty[A])
+  def filterWithFlatMap[A](list: List[A])(predicate: A => Boolean) = {
+    list.flatMap(elem => if (predicate(elem)) List(elem) else List.empty[A])
   }
 
 
@@ -296,21 +302,22 @@ object list_functions {
 
   */
 
-  def myZipWith[A,B,C](list1 : List[A], list2 : List[B])(f : (A,B)=>C) : List[C] = {
+  def myZipWith[A, B, C](list1: List[A], list2: List[B])(f: (A, B) => C): List[C] = {
 
     @annotation.tailrec
-    def go(i : Int, currentList : List[C]) : List[C] = {
-      if (i<0) currentList
-      else go(i-1, f(list1(i), list2(i)) :: currentList)
+    def go(i: Int, currentList: List[C]): List[C] = {
+      if (i < 0) currentList
+      else go(i - 1, f(list1(i), list2(i)) :: currentList)
     }
 
     val sharedLength = scala.math.min(list1.length, list2.length)
 
-    go(sharedLength-1, List.empty[C])
+    go(sharedLength - 1, List.empty[C])
 
   }
 
-  def zipWithAddition(list1 : List[Int], list2 : List[Int]) = myZipWith(list1, list2)(_+_)
+
+  def zipWithAddition(list1: List[Int], list2: List[Int]) = myZipWith(list1, list2)(_ + _)
 
 
   /*
@@ -320,10 +327,10 @@ object list_functions {
   */
 
   @annotation.tailrec
-  def hasSubsequence[A](sup : List[A], sub : List[A]) : Boolean = {
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
     if (sub.isEmpty) return true
     if (sup.isEmpty) return false
-    hasSubsequence(sup.tail, if (sub.head==sup.head) sub.tail else sub)
+    hasSubsequence(sup.tail, if (sub.head == sup.head) sub.tail else sub)
   }
 
 

@@ -11,7 +11,7 @@ class MyOptionTests extends Specification {
 
   "map on Option" should {
 
-    val times2 = (n:Int) => n*2
+    val times2 = (n: Int) => n * 2
 
     "return result of function when applied to Some" in {
       MySome(10).map(times2) must beEqualTo(MySome(20))
@@ -26,7 +26,7 @@ class MyOptionTests extends Specification {
 
   "flatMap on Option" should {
 
-    val optionalTimes2 = (n : Int) => if (n < 10) MySome(n * 2) else MyNone()
+    val optionalTimes2 = (n: Int) => if (n < 10) MySome(n * 2) else MyNone()
 
     "return result of function when it is applied to Some and returns Some" in {
       MySome(5).flatMap(optionalTimes2) must beEqualTo(MySome(10))
@@ -71,7 +71,7 @@ class MyOptionTests extends Specification {
 
   "filter on Option" should {
 
-    val ge10 = (n:Int) => n >= 10
+    val ge10 = (n: Int) => n >= 10
 
     "return Some when applied to Some and function evaluates true" in {
       MySome(10).filter(ge10) must beEqualTo(MySome(10))

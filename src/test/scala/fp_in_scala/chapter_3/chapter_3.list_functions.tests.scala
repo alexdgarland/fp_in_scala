@@ -5,8 +5,10 @@ import org.junit.runner.RunWith
 import org.specs2.mutable._
 import org.specs2.runner._
 
+
 @RunWith(classOf[JUnitRunner])
 class Chapter3ListTests extends Specification {
+
 
   "Tail function" should {
 
@@ -85,7 +87,7 @@ class Chapter3ListTests extends Specification {
 
   "Drop While function" should {
 
-    def greaterThan10 = (i : Int) => i > 10
+    def greaterThan10 = (i: Int) => i > 10
 
     "return empty list when given empty list (regardless of predicate)" in {
       dropwhile(List.empty[Int], greaterThan10) must beEqualTo(Nil)
@@ -146,27 +148,27 @@ class Chapter3ListTests extends Specification {
     val testList = List(2, 4, 5)
 
     "perform left-associative division over a list when implemented iteratively" in {
-      iterFoldLeft(testList,1000)((acc,next)=>acc/next) must beEqualTo(25)
+      iterFoldLeft(testList, 1000)((acc, next) => acc / next) must beEqualTo(25)
     }
 
     "perform left-associative division over a list when implemented tail-recursively" in {
-      recFoldLeft(testList,1000)((acc,next)=>acc/next) must beEqualTo(25)
+      recFoldLeft(testList, 1000)((acc, next) => acc / next) must beEqualTo(25)
     }
 
     "allow us to sum a list" in {
-      sumWithFoldLeft(List(1,2,3,4,5)) must beEqualTo(15)
+      sumWithFoldLeft(List(1, 2, 3, 4, 5)) must beEqualTo(15)
     }
 
     "allow us to find the product of a list" in {
-      productWithFoldLeft(List(1,2,3,4,5)) must beEqualTo(120)
+      productWithFoldLeft(List(1, 2, 3, 4, 5)) must beEqualTo(120)
     }
 
     "allow us to find the length of a list" in {
-      lengthWithFoldLeft(List(1,2,3,4,5)) must beEqualTo(5)
+      lengthWithFoldLeft(List(1, 2, 3, 4, 5)) must beEqualTo(5)
     }
 
     "allow us to reverse a list" in {
-      reverseWithFoldLeft(List(1,2,3,4,5)) must beEqualTo(List(5,4,3,2,1))
+      reverseWithFoldLeft(List(1, 2, 3, 4, 5)) must beEqualTo(List(5, 4, 3, 2, 1))
     }
 
   }
@@ -175,7 +177,7 @@ class Chapter3ListTests extends Specification {
   "append" should {
 
     "be implementable with foldRight" in {
-      appendWithFoldRight(List(1,2,3), 4) must beEqualTo(List(1,2,3,4))
+      appendWithFoldRight(List(1, 2, 3), 4) must beEqualTo(List(1, 2, 3, 4))
     }
 
   }
@@ -183,8 +185,8 @@ class Chapter3ListTests extends Specification {
   "flattenWithFoldRight function" should {
 
     "return the correct flat list from a nested list" in {
-      val inputList = List(List(1,2,3), List(4,5,6), List(7,8,9))
-      flattenWithFoldRight(inputList) must beEqualTo(List(1,2,3,4,5,6,7,8,9))
+      val inputList = List(List(1, 2, 3), List(4, 5, 6), List(7, 8, 9))
+      flattenWithFoldRight(inputList) must beEqualTo(List(1, 2, 3, 4, 5, 6, 7, 8, 9))
     }
 
   }
@@ -192,7 +194,7 @@ class Chapter3ListTests extends Specification {
   "incrementList function" should {
 
     "return a new List[Int] with each element increased by one" in {
-      incrementList(List(1,2,3,4,5)) must beEqualTo(List(2,3,4,5,6))
+      incrementList(List(1, 2, 3, 4, 5)) must beEqualTo(List(2, 3, 4, 5, 6))
     }
 
   }
@@ -200,8 +202,8 @@ class Chapter3ListTests extends Specification {
   "stringifyDoubleList function" should {
 
     "return expected list of strings when give list of doubles" in {
-      val inputList : List[Double] = List(1.0,2.0,3.0,4.0,5.0)
-      val expectedList : List[String] = List("1.0","2.0","3.0","4.0","5.0")
+      val inputList: List[Double] = List(1.0, 2.0, 3.0, 4.0, 5.0)
+      val expectedList: List[String] = List("1.0", "2.0", "3.0", "4.0", "5.0")
       stringifyDoubleList(inputList) must beEqualTo(expectedList)
     }
 
@@ -211,16 +213,16 @@ class Chapter3ListTests extends Specification {
   "removeOddNumbers function" should {
 
     "not remove any numbers from even-only list" in {
-      val originalList = List(2,4,6,8,10)
+      val originalList = List(2, 4, 6, 8, 10)
       removeOddNumbers(originalList) must beEqualTo(originalList)
     }
 
     "return empty list for odd-only list" in {
-      removeOddNumbers(List(1,3,5,7,9)).length must beEqualTo(0)
+      removeOddNumbers(List(1, 3, 5, 7, 9)).length must beEqualTo(0)
     }
 
     "remove correct elements from mixed list" in {
-      removeOddNumbers(List(1,2,3,4,5,6)) must beEqualTo(List(2,4,6))
+      removeOddNumbers(List(1, 2, 3, 4, 5, 6)) must beEqualTo(List(2, 4, 6))
     }
 
   }
@@ -230,8 +232,8 @@ class Chapter3ListTests extends Specification {
 
     "return correct list when given list plus transformation" in {
       // Arrange
-      val inputList = List(1,2,3,4)
-      def transformFunc(i : Int) = (1 to 3).toList.map(el => el * i)
+      val inputList = List(1, 2, 3, 4)
+      def transformFunc(i: Int) = (1 to 3).toList.map(el => el * i)
       val expectedList = List(1, 2, 3, 2, 4, 6, 3, 6, 9, 4, 8, 12)
       // Act
       val actualList = myFlatMap(inputList)(transformFunc)
@@ -244,19 +246,19 @@ class Chapter3ListTests extends Specification {
 
   "filterWithFlatMap function" should {
 
-    val isEven = (i : Int) => (i % 2 == 0)
+    val isEven = (i: Int) => (i % 2 == 0)
 
     "not remove any numbers from even-only list filtered for evens" in {
-      val originalList = List(2,4,6,8,10)
+      val originalList = List(2, 4, 6, 8, 10)
       filterWithFlatMap(originalList)(isEven) must beEqualTo(originalList)
     }
 
     "return empty list for odd-only list filtered for evens" in {
-      filterWithFlatMap(List(1,3,5,7,9))(isEven).length must beEqualTo(0)
+      filterWithFlatMap(List(1, 3, 5, 7, 9))(isEven).length must beEqualTo(0)
     }
 
     "remove correct elements from mixed list filtered for evens" in {
-      filterWithFlatMap(List(1,2,3,4,5,6))(isEven) must beEqualTo(List(2,4,6))
+      filterWithFlatMap(List(1, 2, 3, 4, 5, 6))(isEven) must beEqualTo(List(2, 4, 6))
     }
   }
 
@@ -265,15 +267,15 @@ class Chapter3ListTests extends Specification {
     // This acts as a testable instance of the more general myZipWith function
 
     "zip two equal length lists correctly" in {
-      zipWithAddition(List(1,2,3), List(4,5,6)) must beEqualTo(List(5,7,9))
+      zipWithAddition(List(1, 2, 3), List(4, 5, 6)) must beEqualTo(List(5, 7, 9))
     }
 
     "zip items up to maximum shared length where first list is longer" in {
-      zipWithAddition(List(7,8,9,10), List(11,12,13)) must beEqualTo(List(18,20,22))
+      zipWithAddition(List(7, 8, 9, 10), List(11, 12, 13)) must beEqualTo(List(18, 20, 22))
     }
 
     "zip items up to maximum shared length where second list is longer" in {
-      zipWithAddition(List(14,15,16), List(17,18,19,20)) must beEqualTo(List(31,33,35))
+      zipWithAddition(List(14, 15, 16), List(17, 18, 19, 20)) must beEqualTo(List(31, 33, 35))
     }
 
   }
@@ -281,18 +283,18 @@ class Chapter3ListTests extends Specification {
 
   "hasSubsequence function" should {
 
-    val superSequence = List(1,2,3,4,5,6,7,8,9,10)
+    val superSequence = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
     "recognise continuous subsequence" in {
-      hasSubsequence(superSequence, List(3,4,5)) must beTrue
+      hasSubsequence(superSequence, List(3, 4, 5)) must beTrue
     }
 
     "recognise non-continuous subsequence" in {
-      hasSubsequence(superSequence, List(3,6,8)) must beTrue
+      hasSubsequence(superSequence, List(3, 6, 8)) must beTrue
     }
 
     "recognise when subsequence is not present" in {
-      hasSubsequence(superSequence, List(3,6,3)) must beFalse
+      hasSubsequence(superSequence, List(3, 6, 3)) must beFalse
     }
 
   }

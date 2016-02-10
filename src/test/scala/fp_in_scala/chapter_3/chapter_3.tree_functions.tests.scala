@@ -5,8 +5,10 @@ import org.junit.runner.RunWith
 import org.specs2.mutable._
 import org.specs2.runner._
 
+
 @RunWith(classOf[JUnitRunner])
 class Chapter3TreeTests extends Specification {
+
 
   /*
 
@@ -73,19 +75,19 @@ class Chapter3TreeTests extends Specification {
     val expectedStringTree = Branch(Branch(Leaf("A2"), Leaf("A6")), Branch(Leaf("A4"), Branch(Leaf("A10"), Leaf("A8"))))
 
     "return expected tree for standard test tree with doubling function mapped" in {
-      treeMap(testTree)(i=>i*2) must beEqualTo(expectedIntTree)
+      treeMap(testTree)(i => i * 2) must beEqualTo(expectedIntTree)
     }
 
     "return expected tree for standard test tree with function which changes value type mapped" in {
-      treeMap(testTree)(i=>"A"+(i*2).toString) must beEqualTo(expectedStringTree)
+      treeMap(testTree)(i => "A" + (i * 2).toString) must beEqualTo(expectedStringTree)
     }
 
     "with fold - return expected tree for standard test tree with doubling function mapped" in {
-      treeMapWithFold(testTree)(i=>i*2) must beEqualTo(expectedIntTree)
+      treeMapWithFold(testTree)(i => i * 2) must beEqualTo(expectedIntTree)
     }
 
     "with fold - return expected tree for standard test tree with function which changes value type mapped" in {
-      treeMapWithFold(testTree)(i=>"A"+(i*2).toString) must beEqualTo(expectedStringTree)
+      treeMapWithFold(testTree)(i => "A" + (i * 2).toString) must beEqualTo(expectedStringTree)
     }
 
 
