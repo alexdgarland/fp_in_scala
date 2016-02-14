@@ -4,6 +4,9 @@ package fp_in_scala.chapter_5
 sealed trait MyStream[+A] {
 
 
+  import MyStream._
+
+
   def headOption: Option[A] = this match {
     case MyEmpty => None
     case MyCons(h, t) => Some(h())
@@ -17,8 +20,8 @@ sealed trait MyStream[+A] {
 
 
   def take(n: Int): MyStream[A] = this match {
-    case MyCons(h, t) if n > 0 => MyStream.cons(h(), t().take(n - 1))
-    case _ => MyStream.empty
+    case MyCons(h, t) if n > 0 => cons(h(), t().take(n - 1))
+    case _ => empty
   }
 
 
@@ -30,8 +33,8 @@ sealed trait MyStream[+A] {
 
 
   def takeWhile(p: A => Boolean): MyStream[A] = this match {
-    case MyCons(h, t) if p(h()) => MyStream.cons(h(), t().takeWhile(p))
-    case _ => MyStream.empty
+    case MyCons(h, t) if p(h()) => cons(h(), t().takeWhile(p))
+    case _ => empty
   }
 
 
@@ -54,11 +57,10 @@ sealed trait MyStream[+A] {
 
 
   def takeWhileUsingFoldRight(p: A => Boolean): MyStream[A] = {
-    this.foldRight(MyStream.empty[A])(
-      (nextelement, stream) =>
-        if (p(nextelement))
-          MyStream.cons(nextelement, stream)
-        else MyStream.empty
+    this.foldRight(empty[A])(
+      (nextElement, stream) =>
+        if (p(nextElement)) cons(nextElement, stream)
+        else empty
     )
   }
 
@@ -84,6 +86,8 @@ object MyStream {
   def empty[A]: MyStream[A] = MyEmpty
 
 
-  def apply[A](as: A*): MyStream[A] = if (as.isEmpty) empty else cons(as.head, apply(as.tail: _*))
+  def apply[A](as: A*): MyStream[A] =
+    if (as.isEmpty) empty
+    else cons(as.head, apply(as.tail: _*))
 
 }
