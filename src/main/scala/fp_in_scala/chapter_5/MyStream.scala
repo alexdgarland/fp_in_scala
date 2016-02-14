@@ -34,6 +34,34 @@ sealed trait MyStream[+A] {
     case _ => MyStream.empty
   }
 
+
+  def exists(p: A => Boolean): Boolean = this match {
+    case MyCons(h, t) => p(h()) || t().exists(p)
+    case _ => false
+  }
+
+
+  def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {
+    case MyCons(h, t) => f(h(), t().foldRight(z)(f))
+    case _ => z
+  }
+
+
+  def forAll(p: A => Boolean): Boolean = this match {
+    case MyCons(h, t) => p(h()) && t().forAll(p)
+    case _ => true
+  }
+
+
+  def takeWhileUsingFoldRight(p: A => Boolean): MyStream[A] = {
+    this.foldRight(MyStream.empty[A])(
+      (nextelement, stream) =>
+        if (p(nextelement))
+          MyStream.cons(nextelement, stream)
+        else MyStream.empty
+    )
+  }
+
 }
 
 

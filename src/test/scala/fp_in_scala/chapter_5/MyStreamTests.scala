@@ -64,9 +64,10 @@ class MyStreamTests extends Specification {
   }
 
 
-  "takeWhile method" should {
+  def isEven(i: Int) = i % 2 == 0
 
-    def isEven(i: Int) = i % 2 == 0
+
+  "takeWhile method" should {
 
     "take correct items where condition is met by some items" in {
       val result = MyStream(2, 4, 6, 7, 8, 10).takeWhile(isEven)
@@ -89,5 +90,54 @@ class MyStreamTests extends Specification {
     }
 
   }
+
+
+  "forAll method" should {
+
+    "return true when all elements match" in {
+      MyStream(2, 4, 6, 8, 10).forAll(isEven) should beTrue
+    }
+
+    "return false when all elements do not match" in {
+      MyStream(1, 3, 5, 7, 9).forAll(isEven) should beFalse
+    }
+
+    "return false when a single element does not match" in {
+      MyStream(2, 4, 7, 8, 10).forAll(isEven) should beFalse
+    }
+
+    "return true when calle on an empty list" in {
+      MyStream.empty.forAll(isEven) should beTrue
+    }
+
+  }
+
+
+  "takeWhileUsingFoldRight method" should {
+
+    def isEven(i: Int) = i % 2 == 0
+
+    "take correct items where condition is met by some items" in {
+      val result = MyStream(2, 4, 6, 7, 8, 10).takeWhileUsingFoldRight(isEven)
+      result.toList should beEqualTo(List(2, 4, 6))
+    }
+
+    "return stream of all available elements where all meet condition" in {
+      val result = MyStream(2, 4, 6, 8, 10).takeWhileUsingFoldRight(isEven)
+      result.toList should beEqualTo(List(2, 4, 6, 8, 10))
+    }
+
+    "return empty stream where first element does not match condition" in {
+      val result = MyStream(1, 4, 6, 7, 8, 10).takeWhileUsingFoldRight(isEven)
+      result should be(MyStream.empty)
+    }
+
+    "return empty stream where original stream is empty" in {
+      val result = MyStream.empty.takeWhileUsingFoldRight(isEven)
+      result should be(MyStream.empty)
+    }
+
+  }
+
 
 }
