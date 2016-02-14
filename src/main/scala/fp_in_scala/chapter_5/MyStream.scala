@@ -15,6 +15,19 @@ sealed trait MyStream[+A] {
     case MyCons(h, t) => h() :: t().toList
   }
 
+
+  def take(n: Int): MyStream[A] = this match {
+    case MyCons(h, t) if n > 0 => MyStream.cons(h(), t().take(n - 1))
+    case _ => MyStream.empty
+  }
+
+
+  @annotation.tailrec
+  final def drop(n: Int): MyStream[A] = this match {
+    case MyCons(_, t) if n > 0 => t().drop(n - 1)
+    case _ => this
+  }
+
 }
 
 
