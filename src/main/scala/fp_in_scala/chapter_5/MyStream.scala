@@ -28,6 +28,12 @@ sealed trait MyStream[+A] {
     case _ => this
   }
 
+
+  def takeWhile(p: A => Boolean): MyStream[A] = this match {
+    case MyCons(h, t) if p(h()) => MyStream.cons(h(), t().takeWhile(p))
+    case _ => MyStream.empty
+  }
+
 }
 
 

@@ -63,4 +63,31 @@ class MyStreamTests extends Specification {
 
   }
 
+
+  "takeWhile method" should {
+
+    def isEven(i: Int) = i % 2 == 0
+
+    "take correct items where condition is met by some items" in {
+      val result = MyStream(2, 4, 6, 7, 8, 10).takeWhile(isEven)
+      result.toList should beEqualTo(List(2, 4, 6))
+    }
+
+    "return stream of all available elements where all meet condition" in {
+      val result = MyStream(2, 4, 6, 8, 10).takeWhile(isEven)
+      result.toList should beEqualTo(List(2, 4, 6, 8, 10))
+    }
+
+    "return empty stream where first element does not match condition" in {
+      val result = MyStream(1, 4, 6, 7, 8, 10).takeWhile(isEven)
+      result should be(MyStream.empty)
+    }
+
+    "return empty stream where original stream is empty" in {
+      val result = MyStream.empty.takeWhile(isEven)
+      result should be(MyStream.empty)
+    }
+
+  }
+
 }
