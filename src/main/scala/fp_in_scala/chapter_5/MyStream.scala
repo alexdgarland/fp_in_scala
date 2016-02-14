@@ -64,6 +64,12 @@ sealed trait MyStream[+A] {
     )
   }
 
+
+  def headOptionUsingFoldRight: Option[A] =
+    this.foldRight[Option[A]](None)(
+      (nextElement, stream) => Some(nextElement)
+    )
+
 }
 
 

@@ -140,4 +140,20 @@ class MyStreamTests extends Specification {
   }
 
 
+  "headOptionUsingFoldRight method" should {
+
+    "return Some of head when list has multiple elements" in {
+      MyStream(1, 2, 3).headOptionUsingFoldRight should beEqualTo(Some(1))
+    }
+
+    "return Some of sole element when list has only one element" in {
+      MyStream(1).headOptionUsingFoldRight should beEqualTo(Some(1))
+    }
+
+    "return None when list is empty" in {
+      MyStream.empty.headOptionUsingFoldRight should beNone
+    }
+
+  }
+
 }
