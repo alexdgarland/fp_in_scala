@@ -70,6 +70,12 @@ sealed trait MyStream[+A] {
       (nextElement, stream) => Some(nextElement)
     )
 
+
+  def map[B](f: A => B): MyStream[B] = this match {
+    case MyCons(h, t) => MyCons[B](() => f(h()), () => t().map(f))
+    case _ => empty
+  }
+
 }
 
 

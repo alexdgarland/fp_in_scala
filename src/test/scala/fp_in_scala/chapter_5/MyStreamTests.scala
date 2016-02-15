@@ -156,4 +156,19 @@ class MyStreamTests extends Specification {
 
   }
 
+
+  "map method" should {
+
+    def double(i: Int) = i * 2
+
+    "map function over stream" in {
+      MyStream(1, 2, 3).map(double).toList should beEqualTo(List(2, 4, 6))
+    }
+
+    "return empty stream when called on empty stream" in {
+      MyStream.empty.map(double) should be(MyStream.empty)
+    }
+
+  }
+
 }
