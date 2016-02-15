@@ -72,7 +72,7 @@ sealed trait MyStream[+A] {
 
 
   def map[B](f: A => B): MyStream[B] =
-    foldRight(empty[B])((h, t)=> cons(f(h), t))
+    foldRight(empty[B])((h, t) => cons(f(h), t))
 
 
   def filter(p: A => Boolean): MyStream[A] =
@@ -80,7 +80,14 @@ sealed trait MyStream[+A] {
 
 
   def append[B >: A](other: MyStream[B]): MyStream[B] =
-    foldRight(other)(cons(_,_))
+    foldRight(other)(cons(_, _))
+
+
+  def flatMap[B](f: A => MyStream[B]): MyStream[B] =
+    foldRight(empty[B])(
+      (newStream, existingStream) =>
+        f(newStream).append(existingStream)
+    )
 
 }
 

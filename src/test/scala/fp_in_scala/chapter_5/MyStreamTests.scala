@@ -212,4 +212,14 @@ class MyStreamTests extends Specification {
 
   }
 
+
+  "flatMap method" should {
+
+    "create single stream from function applied to stream" in {
+      val result = MyStream(1, 2, 3).flatMap(i => MyStream(i, i, i))
+      result.toList should beEqualTo(List(1, 1, 1, 2, 2, 2, 3, 3, 3))
+    }
+
+  }
+
 }
