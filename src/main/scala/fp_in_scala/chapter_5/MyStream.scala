@@ -79,7 +79,7 @@ sealed trait MyStream[+A] {
     foldRight(empty[A])((h, t) => if (p(h)) cons(h, t) else t)
 
 
-  def append[B >: A](other: MyStream[B]): MyStream[B] =
+  def append[B >: A](other: => MyStream[B]): MyStream[B] =
     foldRight(other)(cons(_, _))
 
 
