@@ -71,17 +71,12 @@ sealed trait MyStream[+A] {
     )
 
 
-  def map[B](f: A => B): MyStream[B] = this match {
-    case MyCons(h, t) => cons[B](f(h()), t().map(f))
-    case _ => empty
-  }
+  def map[B](f: A => B): MyStream[B] =
+    foldRight(empty[B])((h, t)=> cons(f(h), t))
 
 
-  def filter(p: A => Boolean): MyStream[A] = this match {
-    case MyCons(h, t) if p(h()) => cons[A](h(), t().filter(p))
-    case MyCons(h, t) => t().filter(p)
-    case _ => empty
-  }
+  def filter(p: A => Boolean): MyStream[A] =
+    foldRight(empty[A])((h, t) => if (p(h)) cons(h, t) else t)
 
 
   def append[B >: A](other: MyStream[B]): MyStream[B] =
