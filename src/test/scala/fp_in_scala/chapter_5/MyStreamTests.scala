@@ -15,6 +15,12 @@ class MyStreamTests extends Specification {
   def listOf3 = List(1, 2, 3)
 
 
+  def isEven(i: Int) = i % 2 == 0
+
+
+  def double(i: Int) = i * 2
+
+
   "toList method" should {
 
     "return empty list whif (n > 0)en stream is empty" in {
@@ -62,9 +68,6 @@ class MyStreamTests extends Specification {
     }
 
   }
-
-
-  def isEven(i: Int) = i % 2 == 0
 
 
   "takeWhile method" should {
@@ -115,8 +118,6 @@ class MyStreamTests extends Specification {
 
   "takeWhileUsingFoldRight method" should {
 
-    def isEven(i: Int) = i % 2 == 0
-
     "take correct items where condition is met by some items" in {
       val result = MyStream(2, 4, 6, 7, 8, 10).takeWhileUsingFoldRight(isEven)
       result.toList should beEqualTo(List(2, 4, 6))
@@ -159,14 +160,54 @@ class MyStreamTests extends Specification {
 
   "map method" should {
 
-    def double(i: Int) = i * 2
-
     "map function over stream" in {
       MyStream(1, 2, 3).map(double).toList should beEqualTo(List(2, 4, 6))
     }
 
     "return empty stream when called on empty stream" in {
       MyStream.empty.map(double) should be(MyStream.empty)
+    }
+
+  }
+
+
+  "filter method" should {
+
+    "return correct elements from stream where some match" in {
+      MyStream(1, 2, 3, 4, 5, 6, 7).filter(isEven).toList should beEqualTo(List(2, 4, 6))
+    }
+
+    "return correct elements from stream where all match" in {
+      MyStream(2, 4, 6, 8, 10).filter(isEven).toList should beEqualTo(List(2, 4, 6, 8, 10))
+    }
+
+    "return empty stream from stream where none match" in {
+      MyStream(1, 3, 5, 7, 9).filter(isEven) should be(MyStream.empty)
+    }
+
+    "return empty stream from empty stream" in {
+      MyStream.empty.filter(isEven) should be(MyStream.empty)
+    }
+
+  }
+
+
+  "append method" should {
+
+    "append stream elements to populated stream" in {
+      MyStream(1, 2, 3).append(MyStream(4, 5, 6)).toList should beEqualTo(List(1, 2, 3, 4, 5, 6))
+    }
+
+    "append stream elements to empty streams" in {
+      MyStream.empty.append(MyStream(4, 5, 6)).toList should beEqualTo(List(4, 5, 6))
+    }
+
+    "append empty stream to populated stream" in {
+      MyStream(1, 2, 3).append(MyStream.empty).toList should beEqualTo(List(1, 2, 3))
+    }
+
+    "append empty stream to empty streams" in {
+      MyStream.empty.append(MyStream.empty) should be(MyStream.empty)
     }
 
   }
