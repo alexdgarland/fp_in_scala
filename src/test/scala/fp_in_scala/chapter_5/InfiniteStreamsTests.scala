@@ -44,4 +44,29 @@ class InfiniteStreamsTests extends Specification {
 
   }
 
+
+  "from function" should {
+
+    "return numbers one to ten as first ten elements when started from one" in {
+
+      val sample = from(1)
+        .take(10)
+        .toList
+
+      sample should beEqualTo(List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+
+    }
+
+    "return numbers fifty to fifty-nine as first ten elements when started from fifty" in {
+
+      val sample = from(50)
+        .take(10)
+        .toList
+
+      sample should beEqualTo(List(50, 51, 52, 53, 54, 55, 56, 57, 58, 59))
+
+    }
+
+  }
+
 }
