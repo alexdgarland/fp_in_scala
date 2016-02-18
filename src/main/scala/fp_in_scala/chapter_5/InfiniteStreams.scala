@@ -12,4 +12,12 @@ object InfiniteStreams {
   def from(n: Int): Stream[Int] = cons(n, from(n + 1))
 
 
+  def fibs: Stream[Int] = {
+
+    def inner(a: Int, b: Int): Stream[Int] = cons(a, inner(b, a + b))
+
+    inner(0, 1)
+
+  }
+
 }

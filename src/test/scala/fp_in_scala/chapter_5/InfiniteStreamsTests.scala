@@ -69,4 +69,19 @@ class InfiniteStreamsTests extends Specification {
 
   }
 
+
+  "fibs function" should {
+
+    "correctly return first ten elements of the Fibonacci sequence" in {
+
+      val sample = fibs
+        .take(10)
+        .toList
+
+      sample should beEqualTo(List(0, 1, 1, 2, 3, 5, 8, 13, 21, 34))
+
+    }
+
+  }
+
 }
