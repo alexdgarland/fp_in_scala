@@ -112,7 +112,7 @@ sealed trait MyStream[+A] {
   def takeWhileUsingUnfold(p: A => Boolean): MyStream[A] = {
     unfold(this) {
       (str: MyStream[A]) => str match {
-        case (MyCons(h, t)) if (p(h())) => Some((h(), t()))
+        case (MyCons(h, t)) if p(h()) => Some((h(), t()))
         case _ => None
       }
     }
@@ -130,6 +130,20 @@ sealed trait MyStream[+A] {
     }
 
   }
+
+
+  def zipAllUsingUnfold[B](other: MyStream[B]): MyStream[(Option[A], Option[B])] = {
+    unfold((this, other)) {
+        case (MyCons(h1, t1), MyCons(h2, t2)) =>
+          Some((Some(h1()), Some(h2())), (t1(), t2()))
+        case (MyCons(h1, t1), empty) =>
+          Some((Some(h1()), None), (t1(), empty))
+        case (empty, MyCons(h2, t2)) =>
+          Some((None, Some(h2())), (empty, t2()))
+        case _ =>
+          None
+      }
+    }
 
 }
 

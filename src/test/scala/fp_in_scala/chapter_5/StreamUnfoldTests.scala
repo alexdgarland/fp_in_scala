@@ -105,11 +105,11 @@ class StreamUnfoldTests extends Specification {
 
     "correctly take first five elements of a stream" in {
 
-      val sample = fibs
+      val actual = fibs
         .takeUsingUnfold(5)
         .toList
 
-      sample should beEqualTo(List(0, 1, 1, 2, 3))
+      actual should beEqualTo(List(0, 1, 1, 2, 3))
 
     }
 
@@ -120,11 +120,11 @@ class StreamUnfoldTests extends Specification {
 
     "correctly take elements of a stream while predicate is met" in {
 
-      val sample = fibs
+      val actual = fibs
         .takeWhileUsingUnfold((i: Int) => i < 10)
         .toList
 
-      sample should beEqualTo(List(0, 1, 1, 2, 3, 5, 8))
+      actual should beEqualTo(List(0, 1, 1, 2, 3, 5, 8))
 
     }
 
@@ -133,19 +133,21 @@ class StreamUnfoldTests extends Specification {
 
   "zipWithUsingUnfold function" should {
 
+    val combiner = (i: Int, c: Char) => s"$i$c"
+
+    val expected = List("1A", "2B", "3C", "4D", "5E")
+
     def testZipWithUnfold(stream1: MyStream[Int], stream2: MyStream[Char]) = {
 
-      val combiner = (i: Int, c: Char) => s"$i$c"
-
-      val sample = stream1
+      val actual = stream1
         .zipWithUsingUnfold(stream2, combiner)
         .toList
 
-      sample should beEqualTo(List("1A", "2B", "3C", "4D", "5E"))
+      actual should beEqualTo(expected)
 
     }
 
-    "correctly zip elements of two streams where both are the same length" in {
+    "zip matching elements of two streams where both are the same length" in {
 
       testZipWithUnfold(
         MyStream(1, 2, 3, 4, 5),
@@ -154,7 +156,7 @@ class StreamUnfoldTests extends Specification {
 
     }
 
-    "correctly zip elements of two streams where first is longer than second" in {
+    "zip only matching elements of two streams where first is longer than second" in {
 
       testZipWithUnfold(
         MyStream(1, 2, 3, 4, 5, 6),
@@ -163,12 +165,76 @@ class StreamUnfoldTests extends Specification {
 
     }
 
-    "correctly zip elements of two streams where first is shorter than second" in {
+    "zip only matching elements of two streams where first is shorter than second" in {
 
       testZipWithUnfold(
         MyStream(1, 2, 3, 4, 5),
         MyStream('A', 'B', 'C', 'D', 'E', 'F')
       )
+
+    }
+
+  }
+
+
+  "zipAllUsingUnfold function" should {
+
+    "zip all elements of two streams where both are the same length" in {
+
+      val stream1 = MyStream(1, 2, 3)
+      val stream2 = MyStream('A', 'B', 'C')
+
+      val actual = stream1
+        .zipAllUsingUnfold(stream2)
+        .toList
+
+      val expected = List(
+        (Some(1), Some('A')),
+        (Some(2), Some('B')),
+        (Some(3), Some('C'))
+      )
+
+      actual should beEqualTo(expected)
+
+    }
+
+    "zip all elements of two streams where first is longer than second" in {
+
+      val stream1 = MyStream(1, 2, 3, 4)
+      val stream2 = MyStream('A', 'B', 'C')
+
+      val actual = stream1
+        .zipAllUsingUnfold(stream2)
+        .toList
+
+      val expected = List(
+        (Some(1), Some('A')),
+        (Some(2), Some('B')),
+        (Some(3), Some('C')),
+        (Some(4), None)
+      )
+
+      actual should beEqualTo(expected)
+
+    }
+
+    "zip all elements of two streams where first is shorter than second" in {
+
+      val stream1 = MyStream(1, 2, 3)
+      val stream2 = MyStream('A', 'B', 'C', 'D')
+
+      val actual = stream1
+        .zipAllUsingUnfold(stream2)
+        .toList
+
+      val expected = List(
+        (Some(1), Some('A')),
+        (Some(2), Some('B')),
+        (Some(3), Some('C')),
+        (None, Some('D'))
+      )
+
+      actual should beEqualTo(expected)
 
     }
 
