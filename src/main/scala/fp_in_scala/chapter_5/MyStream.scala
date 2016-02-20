@@ -19,6 +19,12 @@ sealed trait MyStream[+A] {
   }
 
 
+  def isEmpty: Boolean = this match {
+    case MyEmpty => true
+    case _ => false
+  }
+
+
   def take(n: Int): MyStream[A] = this match {
     case MyCons(h, t) if n > 0 => cons(h(), t().take(n - 1))
     case _ => empty
@@ -93,8 +99,10 @@ sealed trait MyStream[+A] {
   def mapUsingUnfold[B](f: A => B): MyStream[B] = {
     unfold(this)((str: MyStream[A]) =>
       str match {
-        case MyCons(h, t) => Some((f(h()), t()))
-        case _ => None
+        case MyCons(h, t) =>
+          Some((f(h()), t()))
+        case _ =>
+          None
       })
   }
 
@@ -111,39 +119,49 @@ sealed trait MyStream[+A] {
 
   def takeWhileUsingUnfold(p: A => Boolean): MyStream[A] = {
     unfold(this) {
-      (str: MyStream[A]) => str match {
-        case (MyCons(h, t)) if p(h()) => Some((h(), t()))
-        case _ => None
-      }
+      case (MyCons(h, t)) if p(h()) =>
+        Some((h(), t()))
+      case _ =>
+        None
     }
   }
 
 
   def zipWithUsingUnfold[B, C](other: MyStream[B], f: (A, B) => C): MyStream[C] = {
     unfold((this, other)) {
-      streams: (MyStream[A], MyStream[B]) => streams match {
-        case (MyCons(h1, t1), MyCons(h2, t2)) =>
-          Some((f(h1(), h2()), (t1(), t2())))
-        case _ =>
-          None
-      }
+      case (MyCons(h1, t1), MyCons(h2, t2)) =>
+        Some((f(h1(), h2()), (t1(), t2())))
+      case _ =>
+        None
     }
-
   }
 
 
   def zipAllUsingUnfold[B](other: MyStream[B]): MyStream[(Option[A], Option[B])] = {
     unfold((this, other)) {
-        case (MyCons(h1, t1), MyCons(h2, t2)) =>
-          Some((Some(h1()), Some(h2())), (t1(), t2()))
-        case (MyCons(h1, t1), empty) =>
-          Some((Some(h1()), None), (t1(), empty))
-        case (empty, MyCons(h2, t2)) =>
-          Some((None, Some(h2())), (empty, t2()))
-        case _ =>
-          None
-      }
+      case (MyCons(h1, t1), MyCons(h2, t2)) =>
+        Some((Some(h1()), Some(h2())), (t1(), t2()))
+      case (MyCons(h1, t1), empty) =>
+        Some((Some(h1()), None), (t1(), empty))
+      case (empty, MyCons(h2, t2)) =>
+        Some((None, Some(h2())), (empty, t2()))
+      case _ =>
+        None
     }
+  }
+
+
+  def startsWithUsingUnfold[B >: A](other: MyStream[B]): Boolean = {
+    unfold(this, other) {
+      case (MyCons(h1, t1), MyCons(h2, t2)) =>
+        Some(h1() == h2(), (t1(), t2()))
+      case (empty, MyCons(_, _)) =>
+        Some(false, (empty, empty))
+      case (_, empty) =>
+        None
+    }
+      .forAll(b => b)
+  }
 
 }
 

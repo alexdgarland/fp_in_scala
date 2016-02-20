@@ -240,4 +240,21 @@ class StreamUnfoldTests extends Specification {
 
   }
 
+
+  "startsWithUsingUnfold function" should {
+
+    "return true when second stream matches the start of the first" in {
+      MyStream(1, 2, 3, 4, 5).startsWithUsingUnfold(MyStream(1, 2, 3)) should beTrue
+    }
+
+    "return false when second stream matches the start of the first" in {
+      MyStream(1, 2, 3, 4, 5).startsWithUsingUnfold(MyStream(3, 4, 5)) should beFalse
+    }
+
+    "return true when second stream is empty" in {
+      MyStream(1, 2, 3, 4, 5).startsWithUsingUnfold(MyStream.empty) should beTrue
+    }
+
+  }
+
 }
