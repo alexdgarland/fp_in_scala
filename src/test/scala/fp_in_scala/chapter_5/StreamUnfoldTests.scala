@@ -3,11 +3,11 @@ package fp_in_scala.chapter_5
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
-import fp_in_scala.chapter_5.InfiniteStreams._
+import fp_in_scala.chapter_5.MyStream._
 
 
 @RunWith(classOf[JUnitRunner])
-class InfiniteStreamsTests extends Specification {
+class StreamUnfoldTests extends Specification {
 
 
   "constant function" should {
@@ -125,6 +125,50 @@ class InfiniteStreamsTests extends Specification {
         .toList
 
       sample should beEqualTo(List(0, 1, 1, 2, 3, 5, 8))
+
+    }
+
+  }
+
+
+  "zipWithUsingUnfold function" should {
+
+    def testZipWithUnfold(stream1: MyStream[Int], stream2: MyStream[Char]) = {
+
+      val combiner = (i: Int, c: Char) => s"$i$c"
+
+      val sample = stream1
+        .zipWithUsingUnfold(stream2, combiner)
+        .toList
+
+      sample should beEqualTo(List("1A", "2B", "3C", "4D", "5E"))
+
+    }
+
+    "correctly zip elements of two streams where both are the same length" in {
+
+      testZipWithUnfold(
+        MyStream(1, 2, 3, 4, 5),
+        MyStream('A', 'B', 'C', 'D', 'E')
+      )
+
+    }
+
+    "correctly zip elements of two streams where first is longer than second" in {
+
+      testZipWithUnfold(
+        MyStream(1, 2, 3, 4, 5, 6),
+        MyStream('A', 'B', 'C', 'D', 'E')
+      )
+
+    }
+
+    "correctly zip elements of two streams where first is shorter than second" in {
+
+      testZipWithUnfold(
+        MyStream(1, 2, 3, 4, 5),
+        MyStream('A', 'B', 'C', 'D', 'E', 'F')
+      )
 
     }
 

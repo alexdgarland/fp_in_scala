@@ -89,6 +89,48 @@ sealed trait MyStream[+A] {
         f(newStream).append(existingStream)
     )
 
+
+  def mapUsingUnfold[B](f: A => B): MyStream[B] = {
+    unfold(this)((str: MyStream[A]) =>
+      str match {
+        case MyCons(h, t) => Some((f(h()), t()))
+        case _ => None
+      })
+  }
+
+
+  def takeUsingUnfold(n: Int): MyStream[A] = {
+    unfold((this, n)) {
+      case (str: MyCons[A], i: Int) if i >= 1 =>
+        Some((str.h(), (str.t(), i - 1)))
+      case _ =>
+        None
+    }
+  }
+
+
+  def takeWhileUsingUnfold(p: A => Boolean): MyStream[A] = {
+    unfold(this) {
+      (str: MyStream[A]) => str match {
+        case (MyCons(h, t)) if (p(h())) => Some((h(), t()))
+        case _ => None
+      }
+    }
+  }
+
+
+  def zipWithUsingUnfold[B, C](other: MyStream[B], f: (A, B) => C): MyStream[C] = {
+    unfold((this, other)) {
+      streams: (MyStream[A], MyStream[B]) => streams match {
+        case (MyCons(h1, t1), MyCons(h2, t2)) =>
+          Some((f(h1(), h2()), (t1(), t2())))
+        case _ =>
+          None
+      }
+    }
+
+  }
+
 }
 
 
@@ -114,5 +156,38 @@ object MyStream {
   def apply[A](as: A*): MyStream[A] =
     if (as.isEmpty) empty
     else cons(as.head, apply(as.tail: _*))
+
+
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): MyStream[A] = {
+    f(z) match {
+      case Some((a, s)) => cons(a, unfold(s)(f))
+      case None => MyStream.empty
+    }
+  }
+
+
+  def constant[A](a: A): MyStream[A] = {
+    // cons(a, constant(a))
+    unfold(a)(_ => Some(a, a))
+  }
+
+
+  def from(n: Int): MyStream[Int] = {
+    // cons(n, from(n + 1))
+    unfold(n)(i => Some(i, i + 1))
+  }
+
+
+  def fibs: MyStream[Int] = {
+
+    //    def inner(a: Int, b: Int): Stream[Int] = cons(a, inner(b, a + b))
+    //
+    //    inner(0, 1)
+
+    unfold((0, 1)) {
+      case (a, b) => Some((a, (b, a + b)))
+    }
+
+  }
 
 }
