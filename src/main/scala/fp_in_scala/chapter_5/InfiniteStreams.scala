@@ -14,18 +14,18 @@ object InfiniteStreams {
 
   def from(n: Int): Stream[Int] = {
     // cons(n, from(n + 1))
-    unfold(n)(i => Some(i, i+1))
+    unfold(n)(i => Some(i, i + 1))
   }
 
 
   def fibs: Stream[Int] = {
 
-//    def inner(a: Int, b: Int): Stream[Int] = cons(a, inner(b, a + b))
-//
-//    inner(0, 1)
+    //    def inner(a: Int, b: Int): Stream[Int] = cons(a, inner(b, a + b))
+    //
+    //    inner(0, 1)
 
     unfold((0, 1)) {
-      case(a, b) => Some((a, (b, a + b)))
+      case (a, b) => Some((a, (b, a + b)))
     }
 
   }
@@ -37,5 +37,25 @@ object InfiniteStreams {
       case None => Stream.empty
     }
   }
+
+
+  implicit class StreamExtensions[A](s: Stream[A]) {
+
+
+    def mapUsingUnfold[B](f: A => B): Stream[B] = {
+      unfold(s)((str: Stream[A]) => Some(f(str.head), str.tail))
+    }
+
+
+    def takeUsingUnfold(n: Int): Stream[A] = {
+      unfold((s, n)) {
+        case (str: Stream[A], i: Int) =>
+          if (i < 1) None
+          else Some((str.head, (str.tail, i-1)))
+      }
+    }
+
+  }
+
 
 }

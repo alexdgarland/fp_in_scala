@@ -84,4 +84,35 @@ class InfiniteStreamsTests extends Specification {
 
   }
 
+
+  "mapUsingUnfold function" should {
+
+    "correctly map function over the first ten elements of a stream" in {
+
+      val sample = fibs
+        .mapUsingUnfold((i: Int) => i * 2)
+        .take(10)
+        .toList
+
+      sample should beEqualTo(List(0, 2, 2, 4, 6, 10, 16, 26, 42, 68))
+
+    }
+
+  }
+
+
+  "takeUsingUnfold function" should {
+
+    "correctly take first five elements of a stream" in {
+
+      val sample = fibs
+        .takeUsingUnfold(5)
+        .toList
+
+      sample should beEqualTo(List(0, 1, 1, 2, 3))
+
+    }
+
+  }
+
 }
