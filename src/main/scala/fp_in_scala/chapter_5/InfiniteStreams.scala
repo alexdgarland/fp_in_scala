@@ -51,9 +51,21 @@ object InfiniteStreams {
       unfold((s, n)) {
         case (str: Stream[A], i: Int) =>
           if (i < 1) None
-          else Some((str.head, (str.tail, i-1)))
+          else Some((str.head, (str.tail, i - 1)))
       }
     }
+
+
+    def takeWhileUsingUnfold(p: A => Boolean): Stream[A] = {
+      unfold((s)) {
+        (str: Stream[A]) => {
+          val h = str.head
+          if (p(h)) Some((h, str.tail))
+          else None
+        }
+      }
+    }
+
 
   }
 

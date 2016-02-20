@@ -115,4 +115,19 @@ class InfiniteStreamsTests extends Specification {
 
   }
 
+
+  "takeWhileUsingUnfold function" should {
+
+    "correctly take elements of a stream while predicate is met" in {
+
+      val sample = fibs
+        .takeWhileUsingUnfold((i: Int) => i < 10)
+        .toList
+
+      sample should beEqualTo(List(0, 1, 1, 2, 3, 5, 8))
+
+    }
+
+  }
+
 }
