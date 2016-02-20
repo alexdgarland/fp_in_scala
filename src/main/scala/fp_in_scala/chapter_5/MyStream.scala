@@ -163,6 +163,22 @@ sealed trait MyStream[+A] {
       .forAll(b => b)
   }
 
+
+  def tailsUsingUnfold: MyStream[MyStream[A]] = {
+
+    case class AppendEmpty(b: Boolean)
+
+    unfold(this, AppendEmpty(false)) {
+      case (MyCons(h, t), _) =>
+        Some(MyCons(h, t), (t(), AppendEmpty(true)))
+      case (MyEmpty, AppendEmpty(true)) =>
+        Some(MyStream.empty, (MyStream.empty, AppendEmpty(false)))
+      case _ =>
+        None
+    }
+
+  }
+
 }
 
 
