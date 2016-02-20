@@ -260,11 +260,16 @@ class StreamUnfoldTests extends Specification {
 
   "tailsUsingUnfold function" should {
 
-    "return empty stream when called on empty stream" in {
-      MyStream.empty[Int].tailsUsingUnfold should be(MyStream.empty)
+    "return stream containing empty stream when called on empty stream" in {
+
+      val results = MyStream.empty[Int].tailsUsingUnfold.toList
+
+      results.length should beEqualTo(1)
+      results.head should be(MyStream.empty)
     }
 
     "return expected stream of streams when called on populated stream" in {
+
       val results = MyStream(1, 2, 3).tailsUsingUnfold.toList
 
       results.length should beEqualTo(4)

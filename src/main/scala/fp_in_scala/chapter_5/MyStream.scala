@@ -166,17 +166,18 @@ sealed trait MyStream[+A] {
 
   def tailsUsingUnfold: MyStream[MyStream[A]] = {
 
-    case class AppendEmpty(b: Boolean)
-
-    unfold(this, AppendEmpty(false)) {
-      case (MyCons(h, t), _) =>
-        Some(MyCons(h, t), (t(), AppendEmpty(true)))
-      case (MyEmpty, AppendEmpty(true)) =>
-        Some(MyStream.empty, (MyStream.empty, AppendEmpty(false)))
+    unfold(this) {
+      case stream @ MyCons(h, t) =>
+        Some(stream, t())
       case _ =>
         None
-    }
+    }.append(MyStream(MyStream.empty))
 
+  }
+
+
+  def hasSubsequence[B >: A](other: MyStream[B]): Boolean = {
+    tailsUsingUnfold.exists(_.startsWithUsingUnfold(other))
   }
 
 }
