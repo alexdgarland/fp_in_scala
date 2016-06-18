@@ -166,12 +166,22 @@ sealed trait MyStream[+A] {
 
   def tailsUsingUnfold: MyStream[MyStream[A]] = {
 
-    unfold(this) {
+    val getNextNonEmptyStreamIfAvailable: MyStream[A] => Option[(MyStream[A], MyStream[A])] = {
+      // If the Stream is nonempty, pass:
+      // - The whole of the stream to be an item in the new Stream-of-Streams.
+      // - The tail of the stream (everything but the head) for further processing.
+      //    This may be populated (MyCons), in which case processing will continue
+      //    or empty (MyEmpty) in which case it will end on the next recursion.
       case stream @ MyCons(h, t) =>
         Some(stream, t())
+      // If the Stream is empty in this recursion, end processing.
       case _ =>
         None
-    }.append(MyStream(MyStream.empty))
+    }
+
+    val nonEmptyStreams = unfold(this)(getNextNonEmptyStreamIfAvailable)
+
+    nonEmptyStreams.append(MyStream(MyStream.empty))
 
   }
 
