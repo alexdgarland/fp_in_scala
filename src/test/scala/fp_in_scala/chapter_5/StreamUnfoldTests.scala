@@ -270,13 +270,11 @@ class StreamUnfoldTests extends Specification {
 
     "return expected stream of streams when called on populated stream" in {
 
-      val results = MyStream(1, 2, 3).tailsUsingUnfold.toList
+      val resultsAsList = MyStream(1, 2, 3).tailsUsingUnfold.map(_.toList).toList
 
-      results.length should beEqualTo(4)
-      results.head.toList should beEqualTo(List(1, 2, 3))
-      results(1).toList should beEqualTo(List(2, 3))
-      results(2).toList should beEqualTo(List(3))
-      results(3).toList should be(List.empty)
+      resultsAsList should beEqualTo(
+        List(List(1,2,3), List(2,3), List(3), List.empty)
+      )
     }
 
   }

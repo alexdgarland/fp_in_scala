@@ -222,4 +222,44 @@ class MyStreamTests extends Specification {
 
   }
 
+
+  "scanRight method" should {
+
+    def tailsUsingScanRight[A](stream: MyStream[A]) = {
+      stream.scanRight(MyStream.empty[A])(
+        (nextElem, lastTail) =>
+          MyCons(() => nextElem, () => lastTail)
+      )
+    }
+
+    "be demonstrably a generalisation of tails" in {
+
+      val resultsAsList = tailsUsingScanRight(MyStream(1, 2, 3)).map(_.toList).toList
+
+      resultsAsList should beEqualTo(
+        List(List(1, 2, 3), List(2, 3), List(3), List.empty)
+      )
+    }
+
+    "create stream of sum results" in {
+      val result = MyStream(1, 2, 3).scanRight(0)(_ + _)
+      result.toList should beEqualTo(List(6, 5, 3, 0))
+    }
+
+    "return stream with one element (initial value) when called on empty stream - summing" in {
+      val results = MyStream.empty[Int].scanRight(0)(_+_).toList
+
+      results.length should beEqualTo(1)
+      results.head should beEqualTo(0)
+    }
+
+    "return stream with one element (initial value) when called on empty stream - tails" in {
+      val results = tailsUsingScanRight(MyStream.empty).toList
+
+      results.length should beEqualTo(1)
+      results.head should beEqualTo(MyStream.empty)
+    }
+
+  }
+
 }

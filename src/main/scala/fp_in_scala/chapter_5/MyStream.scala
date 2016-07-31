@@ -190,6 +190,20 @@ sealed trait MyStream[+A] {
     tailsUsingUnfold.exists(_.startsWithUsingUnfold(other))
   }
 
+
+  def scanRight[B](initialValue: B)(f: (A, B)=> B): MyCons[B] = {
+
+    this.foldRight(MyCons(()=>initialValue, ()=>MyStream.empty))(
+      (newElement, existingOutputList) =>
+        MyCons(
+          () => f(newElement, existingOutputList.h()),
+          () => existingOutputList
+        )
+    )
+
+  }
+
+
 }
 
 
