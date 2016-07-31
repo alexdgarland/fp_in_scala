@@ -23,7 +23,7 @@ class MyStreamTests extends Specification {
 
   "toList method" should {
 
-    "return empty list whif (n > 0)en stream is empty" in {
+    "return empty list when stream is empty" in {
       MyStream.empty.toList should be(List.empty)
     }
 
