@@ -2,11 +2,13 @@ package fp_in_scala.chapter_6
 
 package object RNG {
 
+
   def nonNegativeInt(rng: RNG): (Int, RNG) = {
     val (rawInt, newRNG) = rng.nextInt
-    val nonNegIntValue = if(rawInt == Int.MinValue) 0 else Math.abs(rawInt)
+    val nonNegIntValue = if (rawInt == Int.MinValue) 0 else Math.abs(rawInt)
     (nonNegIntValue, newRNG)
   }
+
 
   def double(rng: RNG): (Double, RNG) = {
     val (nonNegInt, newRNG) = nonNegativeInt(rng)
@@ -14,17 +16,20 @@ package object RNG {
     (randomDouble, newRNG)
   }
 
+
   def intDouble(rng: RNG): ((Int, Double), RNG) = {
     val (intValue, nextRNG) = rng.nextInt
     val (doubleValue, finalRNG) = double(nextRNG)
     ((intValue, doubleValue), finalRNG)
   }
 
+
   def doubleInt(rng: RNG): ((Double, Int), RNG) = {
     val (doubleValue, nextRNG) = double(rng)
     val (intValue, finalRNG) = nextRNG.nextInt
     ((doubleValue, intValue), finalRNG)
   }
+
 
   def double3(rng: RNG): ((Double, Double, Double), RNG) = {
     val (doubleValue1, rng1) = double(rng)
@@ -33,21 +38,18 @@ package object RNG {
     ((doubleValue1, doubleValue2, doubleValue3), rng3)
   }
 
+
   def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
 
-    def inner(list: List[Int], currentRNG: RNG, remaining: Int): (List[Int], RNG, Int) = {
-      if (remaining == 0) {
-        (list, currentRNG, remaining)
-      }
-      else {
-        val (nextIntValue, nextRNG) = currentRNG.nextInt
-        inner(nextIntValue :: list, nextRNG, remaining - 1)
-      }
-    }
+    (1 to count).foldLeft((List.empty[Int], rng))(
+      (previous: (List[Int], RNG), _) =>
+        previous match {
+          case (list, currentRNG) =>
+            val (nextInt, nextRNG) = currentRNG.nextInt
+            (nextInt :: list, nextRNG)
+        }
+    )
 
-    val(finalList, finalRNG, _) = inner(List.empty, rng, count)
-
-    (finalList, finalRNG)
   }
 
 }
