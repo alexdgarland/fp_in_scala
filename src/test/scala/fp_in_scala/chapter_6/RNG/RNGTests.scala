@@ -74,8 +74,9 @@ class RNGTests extends Specification {
     }
 
     "return value almost but not quite one when RNG yields Int.MaxValue" in {
-      val (generatedDouble, _) = double(ConstantRNG(0))
-      generatedDouble must beEqualTo(0.0)
+      val (generatedDouble, _) = double(ConstantRNG(Int.MaxValue))
+      generatedDouble must beLessThan(1.0)
+      (1.0 - generatedDouble) must beLessThan(0.000001)
     }
 
     "return same value for positive and negative of same RNG value" in {
