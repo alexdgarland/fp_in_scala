@@ -94,4 +94,39 @@ class RNGTests extends Specification {
   }
 
 
+  "intDouble function" should {
+
+    "call the RNG twice" in {
+      val (_, newRNG) = intDouble(ListRNG(List(1, 2, 3)))
+      val(nextGeneratedInt, _) = newRNG.nextInt
+      nextGeneratedInt must beEqualTo(3)
+    }
+
+  }
+
+  "doubleInt function" should {
+
+    "call the RNG twice" in {
+      val (_, newRNG) = doubleInt(ListRNG(List(1, 2, 3)))
+      val(nextGeneratedInt, _) = newRNG.nextInt
+      nextGeneratedInt must beEqualTo(3)
+    }
+
+  }
+
+  "double3 function" should {
+
+    "return 3 different doubles in a single call" in {
+      val (doubles, _) = double3(ListRNG(List(1, 2, 3, 4)))
+      doubles.productIterator.toSet.size must beEqualTo(3)
+    }
+
+    "call the RNG three times" in {
+      val (_, newRNG) = double3(ListRNG(List(1, 2, 3, 4)))
+      val(nextGeneratedInt, _) = newRNG.nextInt
+      nextGeneratedInt must beEqualTo(4)
+    }
+
+  }
+
 }
