@@ -33,4 +33,21 @@ package object RNG {
     ((doubleValue1, doubleValue2, doubleValue3), rng3)
   }
 
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+
+    def inner(list: List[Int], currentRNG: RNG, remaining: Int): (List[Int], RNG, Int) = {
+      if (remaining == 0) {
+        (list, currentRNG, remaining)
+      }
+      else {
+        val (nextIntValue, nextRNG) = currentRNG.nextInt
+        inner(nextIntValue :: list, nextRNG, remaining - 1)
+      }
+    }
+
+    val(finalList, finalRNG, _) = inner(List.empty, rng, count)
+
+    (finalList, finalRNG)
+  }
+
 }

@@ -129,4 +129,25 @@ class RNGTests extends Specification {
 
   }
 
+
+  "ints function" should {
+
+    "return as many ints as requested" in {
+      val (results, _) = ints(5)(ConstantRNG(1))
+      results.size must beEqualTo(5)
+    }
+
+    "return several different int values" in {
+      val (results, _) = ints(10)(ListRNG((1 to 10).toList))
+      results.toSet.size must beGreaterThan(5)
+    }
+
+    "call the RNG as many times as the count requested" in {
+      val (_, newRNG) = ints(3)(ListRNG(List(1, 2, 3, 4)))
+      val (nextGeneratedInt, _) = newRNG.nextInt
+      nextGeneratedInt must beEqualTo(4)
+    }
+
+  }
+
 }
