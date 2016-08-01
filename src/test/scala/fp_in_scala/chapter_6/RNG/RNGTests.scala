@@ -66,5 +66,32 @@ class RNGTests extends Specification {
 
   }
 
+  "double function" should {
+
+    "return zero when RNG yields zero" in {
+      val (generatedDouble, _) = double(ConstantRNG(0))
+      generatedDouble must beEqualTo(0.0)
+    }
+
+    "return value almost but not quite one when RNG yields Int.MaxValue" in {
+      val (generatedDouble, _) = double(ConstantRNG(0))
+      generatedDouble must beEqualTo(0.0)
+    }
+
+    "return same value for positive and negative of same RNG value" in {
+      val (generatedDouble1, _) = double(ConstantRNG(1350))
+      val (generatedDouble2, _) = double(ConstantRNG(-1350))
+      generatedDouble1 must beEqualTo(generatedDouble2)
+    }
+
+    "return next iteration of RNG unaltered" in {
+      val (generatedDouble, newRNG) = double(ListRNG(List(0, 7)))
+      generatedDouble must beEqualTo(0.0)
+      val (nextGeneratedInt, _) = newRNG.nextInt
+      nextGeneratedInt must beEqualTo(7)
+    }
+
+  }
+
 
 }

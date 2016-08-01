@@ -8,4 +8,10 @@ package object RNG {
     (nonNegIntValue, newRNG)
   }
 
+  def double(rng: RNG): (Double, RNG) = {
+    val (nonNegInt, newRNG) = nonNegativeInt(rng)
+    val randomDouble = Math.abs(nonNegInt.toDouble / Int.MinValue.toDouble)
+    (randomDouble, newRNG)
+  }
+
 }
