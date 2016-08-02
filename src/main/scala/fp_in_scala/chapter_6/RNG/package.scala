@@ -1,20 +1,17 @@
 package fp_in_scala.chapter_6
 
+import fp_in_scala.chapter_6.RNG.Rand._
+
+
 package object RNG {
 
 
-  def nonNegativeInt(rng: RNG): (Int, RNG) = {
-    val (rawInt, newRNG) = rng.nextInt
-    val nonNegIntValue = if (rawInt == Int.MinValue) 0 else Math.abs(rawInt)
-    (nonNegIntValue, newRNG)
-  }
+  def nonNegativeInt: Rand[Int] =
+    Rand.map(_.nextInt)(i => if (i == Int.MinValue) 0 else Math.abs(i))
 
 
-  def double(rng: RNG): (Double, RNG) = {
-    val (nonNegInt, newRNG) = nonNegativeInt(rng)
-    val randomDouble = Math.abs(nonNegInt.toDouble / Int.MinValue.toDouble)
-    (randomDouble, newRNG)
-  }
+  def double: Rand[Double] =
+    Rand.map(nonNegativeInt)(i => Math.abs(i.toDouble / Int.MinValue.toDouble))
 
 
   def intDouble(rng: RNG): ((Int, Double), RNG) = {
