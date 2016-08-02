@@ -14,18 +14,12 @@ package object RNG {
     Rand.map(nonNegativeInt)(i => Math.abs(i.toDouble / Int.MinValue.toDouble))
 
 
-  def intDouble(rng: RNG): ((Int, Double), RNG) = {
-    val (intValue, nextRNG) = rng.nextInt
-    val (doubleValue, finalRNG) = double(nextRNG)
-    ((intValue, doubleValue), finalRNG)
-  }
+  def intDouble: Rand[(Int, Double)] =
+    both(_.nextInt, double)
 
 
-  def doubleInt(rng: RNG): ((Double, Int), RNG) = {
-    val (doubleValue, nextRNG) = double(rng)
-    val (intValue, finalRNG) = nextRNG.nextInt
-    ((doubleValue, intValue), finalRNG)
-  }
+  def doubleInt: Rand[(Double, Int)] =
+    both(double, _.nextInt)
 
 
   def double3(rng: RNG): ((Double, Double, Double), RNG) = {
@@ -36,17 +30,8 @@ package object RNG {
   }
 
 
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+  def ints(count: Int): Rand[List[Int]] =
+    sequence(List.fill(count)((rng: RNG) => rng.nextInt))(_)
 
-    (1 to count).foldLeft((List.empty[Int], rng))(
-      (previous: (List[Int], RNG), _) =>
-        previous match {
-          case (list, currentRNG) =>
-            val (nextInt, nextRNG) = currentRNG.nextInt
-            (nextInt :: list, nextRNG)
-        }
-    )
-
-  }
 
 }
