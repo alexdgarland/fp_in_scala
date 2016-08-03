@@ -154,8 +154,6 @@ class RNGTests extends Specification {
 
   "nonNegativeIntLessThan function" should {
 
-    import Rand.nonNegativeIntLessThan
-
     val rngLtHighestMultiple = ListRNG(List(2147483639, 100))
 
     "return first value when it is less than highest multiple of n below MaxValue" in {

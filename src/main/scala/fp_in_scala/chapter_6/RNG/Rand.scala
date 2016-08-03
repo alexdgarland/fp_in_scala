@@ -52,16 +52,4 @@ object Rand {
   }
 
 
-  def nonNegativeIntLessThan(n: Int): Rand[Int] = {
-    flatMap(nonNegativeInt)(
-      i => {
-        val mod = i % n
-        if (i + (n - 1) - mod >= 0)
-          rng => (mod, rng)
-        else
-          nonNegativeIntLessThan(n)
-      }
-    )
-  }
-
 }

@@ -34,4 +34,16 @@ package object RNG {
     sequence(List.fill(count)((rng: RNG) => rng.nextInt))(_)
 
 
+  def nonNegativeIntLessThan(n: Int): Rand[Int] = {
+    flatMap(nonNegativeInt)(
+      i => {
+        val mod = i % n
+        if (i + (n - 1) - mod >= 0)
+          rng => (mod, rng)
+        else
+          nonNegativeIntLessThan(n)
+      }
+    )
+  }
+
 }
