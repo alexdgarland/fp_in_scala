@@ -151,4 +151,37 @@ class RNGTests extends Specification {
 
   }
 
+
+  "nonNegativeIntLessThan function" should {
+
+    import Rand.nonNegativeIntLessThan
+
+    val rngLtHighestMultiple = ListRNG(List(2147483639, 100))
+
+    "return first value when it is less than highest multiple of n below MaxValue" in {
+      val (generatedValue, _) = nonNegativeIntLessThan(10)(rngLtHighestMultiple)
+      generatedValue must beEqualTo(9)
+    }
+
+    "call RNG only once when first value is less than highest multiple of n below MaxValue" in {
+      val (_, newRNG) = nonNegativeIntLessThan(10)(rngLtHighestMultiple)
+      val (nextGeneratedInt, _) = newRNG.nextInt
+      nextGeneratedInt must beEqualTo(100)
+    }
+
+    val rngGtHighestMultiple = ListRNG(List(2147483642, 2147483638, 3000))
+
+    "return second value when first value is higher than highest multiple of n below MaxValue" in {
+      val (generatedValue, _) = nonNegativeIntLessThan(10)(rngGtHighestMultiple)
+      generatedValue must beEqualTo(8)
+    }
+
+    "call RNG twice when first value is higher than highest multiple of n below MaxValue" in {
+      val (_, newRNG) = nonNegativeIntLessThan(10)(rngGtHighestMultiple)
+      val (nextGeneratedInt, _) = newRNG.nextInt
+      nextGeneratedInt must beEqualTo(3000)
+    }
+
+  }
+
 }
