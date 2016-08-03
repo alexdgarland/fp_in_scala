@@ -44,13 +44,24 @@ object Rand {
     }
   }
 
-  def nonNegativeIntLessThan(n: Int): Rand[Int] = {
+
+  def flatMap[A, B](f: Rand[A])(g: A => Rand[B]): Rand[B] = {
     rng =>
-      val(i, rng2) = nonNegativeInt(rng)
-      val mod = i % n
-      if(i + (n-1) - mod >= 0)
-        (mod, rng2)
-      else nonNegativeIntLessThan(n)(rng2)
+      val (a, rng2) = f(rng)
+      g(a)(rng2)
+  }
+
+
+  def nonNegativeIntLessThan(n: Int): Rand[Int] = {
+    flatMap(nonNegativeInt)(
+      i => {
+        val mod = i % n
+        if (i + (n - 1) - mod >= 0)
+          rng => (mod, rng)
+        else
+          nonNegativeIntLessThan(n)
+      }
+    )
   }
 
 }
